@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/order")
 @Api(tags = "OrderController 演示")
 @Slf4j
-public class OrderController
-{
+public class OrderController {
 
     /**
      * 限流实现方式一: 抛出异常的方式定义资源
@@ -29,28 +28,23 @@ public class OrderController
     @ApiOperation(value = "纯代码限流")
     @GetMapping("/getOrder")
     @ResponseBody
-    public String getOrder(@RequestParam(value = "orderId", required = false)String orderId)
-    {
+    public String getOrder(@RequestParam(value = "orderId", required = false) String orderId) {
 
         Entry entry = null;
         // 资源名
         String resourceName = "getOrder";
-        try
-        {
+        try {
             // entry可以理解成入口登记
             entry = SphU.entry(resourceName);
             // 被保护的逻辑, 这里为订单查询接口
             return "正常的业务逻辑 OrderInfo :" + orderId;
-        } catch (BlockException blockException)
-        {
+        } catch (BlockException blockException) {
             // 接口被限流的时候, 会进入到这里
             log.warn("---getOrder1接口被限流了---, exception: ", blockException);
             return "接口限流, 返回空";
-        } finally
-        {
+        } finally {
             // SphU.entry(xxx) 需要与 entry.exit() 成对出现,否则会导致调用链记录异常
-            if (entry != null)
-            {
+            if (entry != null) {
                 entry.exit();
             }
         }
@@ -67,12 +61,10 @@ public class OrderController
     @GetMapping("/detail")
     @SentinelResource(value = "orderInfo", blockHandler = "handleFlowQpsException",
             fallback = "queryOrderInfoFallback")
-    public String getOrderInfo(String orderId)
-    {
+    public String getOrderInfo(String orderId) {
 
         // 模拟接口运行时抛出代码异常
-        if ("000".equals(orderId))
-        {
+        if ("000".equals(orderId)) {
             throw new RuntimeException();
         }
 
@@ -87,8 +79,7 @@ public class OrderController
      *
      * @return
      */
-    public String handleFlowQpsException(String orderId, BlockException e)
-    {
+    public String handleFlowQpsException(String orderId, BlockException e) {
         e.printStackTrace();
         return "订单查询被限流: " + orderId;
     }
@@ -100,8 +91,7 @@ public class OrderController
      *
      * @return
      */
-    public String queryOrderInfoFallback(String orderId, Throwable e)
-    {
+    public String queryOrderInfoFallback(String orderId, Throwable e) {
         return "订单查询失败: " + orderId;
     }
 

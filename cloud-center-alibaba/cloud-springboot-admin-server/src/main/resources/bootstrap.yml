@@ -10,9 +10,9 @@ spring:
       discovery:
         server-addr: ${NACOS_SERVER:cdh1:8848}
         metadata:
-            user:
-               name: "admin"
-               password: "admin"
+          user:
+            name: "admin"
+            password: "admin"
       config:
         server-addr: ${NACOS_SERVER:cdh1:8848}
     inetutils:

@@ -21,7 +21,7 @@ public class CommonSnowflakeIdGenerator extends IncrementGenerator
      * 生成器的 map 缓存
      * key 为 PO 类名,value 为分布式ID生成器
      */
-    private Map<String, SnowflakeIdGenerator> generatorMap = new LinkedHashMap<>();
+    private static Map<String, SnowflakeIdGenerator> generatorMap = new LinkedHashMap<>();
 
 
 
@@ -31,7 +31,7 @@ public class CommonSnowflakeIdGenerator extends IncrementGenerator
     @Override
     public Serializable generate(
             SharedSessionContractImplementor sessionImplementor, Object object)
-            throws HibernateException
+        throws HibernateException
     {
 
         /**
@@ -69,7 +69,7 @@ public class CommonSnowflakeIdGenerator extends IncrementGenerator
      * @param type 生成器的绑定类型，为 PO 类名
      * @return 分布式 ID 生成器
      */
-    public synchronized IdGenerator getFromMap(String type)
+    public static synchronized IdGenerator getFromMap(String type)
     {
         if (generatorMap.containsKey(type))
         {

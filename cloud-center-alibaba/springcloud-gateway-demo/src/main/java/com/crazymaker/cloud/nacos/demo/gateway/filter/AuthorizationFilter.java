@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -35,13 +34,13 @@ public class AuthorizationFilter implements WebFilter {
                     .maxAge(12 * 60 * 60)
                     .path("/");
             response.addCookie(responseCookieBuilder2.build());
-         ResponseCookie.ResponseCookieBuilder responseCookieBuilder3 = ResponseCookie
+            ResponseCookie.ResponseCookieBuilder responseCookieBuilder3 = ResponseCookie
                     .from("webRedirectUrl3", webRedirectUrl)
                     .maxAge(12 * 60 * 60)
                     .path("/").httpOnly(true);
             response.addCookie(responseCookieBuilder3.build());
 
-         ResponseCookie.ResponseCookieBuilder responseCookieBuilder4 = ResponseCookie
+            ResponseCookie.ResponseCookieBuilder responseCookieBuilder4 = ResponseCookie
                     .from("webRedirectUrl4", webRedirectUrl)
                     .maxAge(12 * 60 * 60)
                     .path("/").secure(true);

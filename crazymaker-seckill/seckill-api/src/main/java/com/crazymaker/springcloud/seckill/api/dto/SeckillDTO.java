@@ -1,8 +1,6 @@
 package com.crazymaker.springcloud.seckill.api.dto;
 
-import com.crazymaker.springcloud.common.mvc.JsonLongSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

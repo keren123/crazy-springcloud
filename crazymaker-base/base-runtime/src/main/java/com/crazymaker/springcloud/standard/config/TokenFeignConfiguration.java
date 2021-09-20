@@ -24,6 +24,10 @@ public class TokenFeignConfiguration implements RequestInterceptor
     public void apply(RequestTemplate template)
     {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(null==attributes)
+        {
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
 
         String token = request.getHeader(SessionConstants.AUTHORIZATION_HEAD);

@@ -45,8 +45,8 @@ spring:
           predicates:
             - Path=/blog1/**
           filters:
-             - RewritePath=/blog1/(?<segment>.*), /$\{segment}
-      # 代理前  http://192.168.68.1:9999/blog1/crazymakercircle/article/details/80208650
+            - RewritePath=/blog1/(?<segment>.*), /$\{segment}
+        # 代理前  http://192.168.68.1:9999/blog1/crazymakercircle/article/details/80208650
         #  代理后  https://blog.csdn.net/crazymakercircle/article/details/80208650
         - id: service_provider_demo_route
           uri: lb://service-provider-demo

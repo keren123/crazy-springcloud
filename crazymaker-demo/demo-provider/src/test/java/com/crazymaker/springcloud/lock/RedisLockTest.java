@@ -1,6 +1,5 @@
 package com.crazymaker.springcloud.lock;
 
-import com.crazymaker.springcloud.common.util.ThreadUtil;
 import com.crazymaker.springcloud.demo.start.DemoCloudApplication;
 import com.crazymaker.springcloud.standard.lock.JedisMultiSegmentLock;
 import com.crazymaker.springcloud.standard.lock.RedisLockService;
@@ -13,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

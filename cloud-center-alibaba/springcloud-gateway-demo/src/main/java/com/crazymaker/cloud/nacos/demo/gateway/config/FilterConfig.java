@@ -11,38 +11,32 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Configuration
-public class FilterConfig
-{
+public class FilterConfig {
 
     @Bean
     @Order(-1)
-    public GlobalFilter a()
-    {
+    public GlobalFilter a() {
         return new AFilter();
     }
 
     @Bean
     @Order(0)
-    public GlobalFilter b()
-    {
+    public GlobalFilter b() {
         return new BFilter();
     }
 
     @Bean
     @Order(1)
-    public GlobalFilter c()
-    {
+    public GlobalFilter c() {
         return new CFilter();
     }
 
 
     @Slf4j
-   static public class AFilter implements GlobalFilter, Ordered
-    {
+    static public class AFilter implements GlobalFilter, Ordered {
 
         @Override
-        public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain)
-        {
+        public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
             //请求修改代码
 
             log.info("AFilter前置逻辑");
@@ -58,18 +52,15 @@ public class FilterConfig
 //    int HIGHEST_PRECEDENCE = -2147483648;
 //    int LOWEST_PRECEDENCE = 2147483647;
         @Override
-        public int getOrder()
-        {
+        public int getOrder() {
             return HIGHEST_PRECEDENCE + 100;
         }
     }
 
     @Slf4j
-    static  public class BFilter implements GlobalFilter, Ordered
-    {
+    static public class BFilter implements GlobalFilter, Ordered {
         @Override
-        public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain)
-        {
+        public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
             log.info("BFilter前置逻辑");
             return chain.filter(exchange).then(Mono.fromRunnable(() ->
             {
@@ -82,19 +73,16 @@ public class FilterConfig
 //    int HIGHEST_PRECEDENCE = -2147483648;
 //    int LOWEST_PRECEDENCE = 2147483647;
         @Override
-        public int getOrder()
-        {
+        public int getOrder() {
             return HIGHEST_PRECEDENCE + 200;
         }
     }
 
     @Slf4j
-    static public class CFilter implements GlobalFilter, Ordered
-    {
+    static public class CFilter implements GlobalFilter, Ordered {
 
         @Override
-        public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain)
-        {
+        public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
             log.info("CFilter前置逻辑");
             return chain.filter(exchange).then(Mono.fromRunnable(() ->
             {
@@ -106,8 +94,7 @@ public class FilterConfig
 //    int HIGHEST_PRECEDENCE = -2147483648;
 //    int LOWEST_PRECEDENCE = 2147483647;
         @Override
-        public int getOrder()
-        {
+        public int getOrder() {
             return HIGHEST_PRECEDENCE + 300;
         }
     }

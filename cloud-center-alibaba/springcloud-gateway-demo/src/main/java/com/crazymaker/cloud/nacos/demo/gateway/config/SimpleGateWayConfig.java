@@ -6,12 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SimpleGateWayConfig
-{
+public class SimpleGateWayConfig {
     //手工增加一个路由配置
     @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder)
-    {
+    public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder) {
         RouteLocatorBuilder.Builder builder = routeLocatorBuilder.routes();
         builder
                 .route("path_rote_at_guigu", r -> r.path("/guonei")
@@ -21,7 +19,7 @@ public class SimpleGateWayConfig
                 .route("csdn_route3", r -> r.path("/csdn3/**")
                         .filters(f -> f.rewritePath("/csdn3/(?<segment>.*)", "/$\\{segment}"))
                         .uri("https://blog.csdn.net/"))
-               .route("blog3_rewrite_filter", r -> r.path("/blog3/**")
+                .route("blog3_rewrite_filter", r -> r.path("/blog3/**")
                         .filters(f -> f.rewritePath("/blog3/(?<segment>.*)", "/$\\{segment}"))
                         .uri("https://blog.csdn.net/"))
                 .route("rewritepath_route", r -> r.path("/baidu/**")

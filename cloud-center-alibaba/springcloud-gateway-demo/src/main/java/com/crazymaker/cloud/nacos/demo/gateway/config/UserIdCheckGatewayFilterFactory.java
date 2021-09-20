@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class UserIdCheckGatewayFilterFactory extends AbstractGatewayFilterFactory<Object>
-{
+public class UserIdCheckGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
     @Override
-    public GatewayFilter apply(Object config)
-    {
+    public GatewayFilter apply(Object config) {
         return new UserIdCheckGateWayFilter();
     }
 }

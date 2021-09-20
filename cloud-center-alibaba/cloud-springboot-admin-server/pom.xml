@@ -56,7 +56,6 @@
         </dependency>
 
 
-
         <!-- nacos服务注册发现依赖-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

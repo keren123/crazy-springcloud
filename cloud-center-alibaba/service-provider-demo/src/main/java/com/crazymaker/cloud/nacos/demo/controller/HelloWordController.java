@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/hello")
 @Api(tags = "HelloWord 演示")
 @Slf4j
-public class HelloWordController
-{
+public class HelloWordController {
 
     //回显服务
     @ApiOperation(value = "hello world")

@@ -251,7 +251,7 @@ public class RedisSeckillServiceImpl {
 
         //减库存
 
-        seckillSkuDao.updateStockCountById(skuId);
+        seckillSkuDao.decreaseStockCountById(skuId);
     }
 
 

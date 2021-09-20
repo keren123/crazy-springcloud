@@ -1,20 +1,12 @@
 package com.crazymaker.springcloud.standard.lock;
 
-import com.crazymaker.springcloud.common.exception.BusinessException;
-import com.crazymaker.springcloud.common.util.ThreadUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.script.RedisScript;
 import redis.clients.jedis.Jedis;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 
 @Slf4j
 @Data

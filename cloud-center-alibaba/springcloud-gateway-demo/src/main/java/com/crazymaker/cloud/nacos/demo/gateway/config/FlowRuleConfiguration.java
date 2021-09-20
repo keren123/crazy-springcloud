@@ -44,15 +44,13 @@ import java.util.List;
 import java.util.Set;
 
 @Configuration
-public class FlowRuleConfiguration
-{
+public class FlowRuleConfiguration {
 
     private final List<ViewResolver> viewResolvers;
     private final ServerCodecConfigurer serverCodecConfigurer;
 
     public FlowRuleConfiguration(ObjectProvider<List<ViewResolver>> viewResolversProvider,
-                                 ServerCodecConfigurer serverCodecConfigurer)
-    {
+                                 ServerCodecConfigurer serverCodecConfigurer) {
         this.viewResolvers = viewResolversProvider.getIfAvailable(Collections::emptyList);
         this.serverCodecConfigurer = serverCodecConfigurer;
     }
@@ -60,8 +58,7 @@ public class FlowRuleConfiguration
     // 初始化一个限流的过滤器
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public GlobalFilter sentinelGatewayFilter()
-    {
+    public GlobalFilter sentinelGatewayFilter() {
         return new SentinelGatewayFilter();
     }
 
@@ -70,21 +67,18 @@ public class FlowRuleConfiguration
      */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SentinelGatewayBlockExceptionHandler sentinelGatewayBlockExceptionHandler()
-    {
+    public SentinelGatewayBlockExceptionHandler sentinelGatewayBlockExceptionHandler() {
         return new SentinelGatewayBlockExceptionHandlerEX(viewResolvers, serverCodecConfigurer);
     }
 
     @PostConstruct
-    public void doInit()
-    {
+    public void doInit() {
         initCustomizedApis();
         initGatewayRules();
         initParamRules();
     }
 
-    private void initCustomizedApis()
-    {
+    private void initCustomizedApis() {
         Set<ApiDefinition> definitions = new HashSet<>();
     /*    ApiDefinition api1 = new ApiDefinition("some_customized_api")
                 .setPredicateItems(new HashSet<ApiPredicateItem>()
@@ -102,15 +96,13 @@ public class FlowRuleConfiguration
                 }});*/
 
         ApiDefinition api3 = new ApiDefinition("filter_api_group")
-                .setPredicateItems(new HashSet<ApiPredicateItem>()
-                {{
+                .setPredicateItems(new HashSet<ApiPredicateItem>() {{
                     add(new ApiPathPredicateItem().setPattern("/filter/**")
                             .setMatchStrategy(SentinelGatewayConstants.URL_MATCH_STRATEGY_PREFIX));
                 }});
 
         ApiDefinition api4 = new ApiDefinition("provider_api_group")
-                .setPredicateItems(new HashSet<ApiPredicateItem>()
-                {{
+                .setPredicateItems(new HashSet<ApiPredicateItem>() {{
                     add(new ApiPathPredicateItem().setPattern("/provider/**")
                             .setMatchStrategy(SentinelGatewayConstants.URL_MATCH_STRATEGY_PREFIX));
                 }});
@@ -133,8 +125,7 @@ public class FlowRuleConfiguration
     }
 
 
-    private void initGatewayRules()
-    {
+    private void initGatewayRules() {
         Set<GatewayFlowRule> rules = new HashSet<>();
     /*    rules.add(new GatewayFlowRule("aliyun_route")
                 .setCount(10)
@@ -218,8 +209,7 @@ intervalSec: 每隔多少时间统计一次汇总数据，统计时间窗口，�
 
     }
 
-    private void initParamRules()
-    {
+    private void initParamRules() {
 
         List<ParamFlowRule> paramFlowRules = new ArrayList<>();
        /*   ParamFlowRule paramFlowRule = new ParamFlowRule();

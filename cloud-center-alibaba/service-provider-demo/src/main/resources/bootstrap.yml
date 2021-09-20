@@ -1,28 +1,28 @@
 server:
-  port: 18088
+  port: 28088
   servlet:
-    context-path: /provider
+    context-path: /seata-seckill
 
 spring:
   security:
     enabled: false
   application:
-    name: service-provider-demo
+    name: seata-seckill
   cloud:
     nacos:
       discovery:
         server-addr: ${NACOS_SERVER:cdh1:8848}
         metadata:
           user:
-              name: "admin"
-              password: "admin"
+            name: "admin"
+            password: "admin"
           servlet:
-             context-path: /provider
+            context-path: /seata-seckill
           management:
-             context-path: ${server.servlet.context-path}/actuator
+            context-path: ${server.servlet.context-path}/actuator
       config:
         server-addr: ${NACOS_SERVER:cdh1:8848}
-        prefix: nacos-config-demo
+        prefix: seata-seckill
         group: DEFAULT_GROUP
         file-extension: yaml
         ext-config:

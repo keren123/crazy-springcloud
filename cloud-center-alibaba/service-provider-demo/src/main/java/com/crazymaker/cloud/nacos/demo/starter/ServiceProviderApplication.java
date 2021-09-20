@@ -11,6 +11,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @EnableAutoConfiguration(exclude = {
         SecurityAutoConfiguration.class,
         ManagementWebSecurityAutoConfiguration.class
@@ -25,15 +26,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         })
 public class ServiceProviderApplication {
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext =   SpringApplication.run(ServiceProviderApplication.class, args);
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(ServiceProviderApplication.class, args);
 
         Environment env = applicationContext.getEnvironment();
         String port = env.getProperty("server.port");
         String name = env.getProperty("spring.application.name");
 
         String path = env.getProperty("server.servlet.context-path");
-        if (StringUtils.isBlank(path))
-        {
+        if (StringUtils.isBlank(path)) {
             path = "";
         }
         String ip = env.getProperty("spring.cloud.client.ip-address");

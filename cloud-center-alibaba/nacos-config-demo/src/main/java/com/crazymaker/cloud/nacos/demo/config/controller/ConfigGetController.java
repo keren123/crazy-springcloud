@@ -21,24 +21,22 @@ public class ConfigGetController {
     private String dbusername;
 
 
-
     @Value("${some.proper:empty}")
     private String proper;
-
 
 
     //获取配置的内容
     @ApiOperation(value = "获取配置的内容")
     @RequestMapping(value = "/bar", method = RequestMethod.GET)
     public String getBar() {
-        return "bar is :"+bar;
+        return "bar is :" + bar;
     }
 
     //获取配置的内容
     @ApiOperation(value = "获取配置的db username")
     @RequestMapping(value = "/dbusername", method = RequestMethod.GET)
     public String getDbusername() {
-        return "db username is :"+dbusername;
+        return "db username is :" + dbusername;
     }
 
 
@@ -46,9 +44,8 @@ public class ConfigGetController {
     @ApiOperation(value = "获取独立配置 proper")
     @RequestMapping(value = "/proper", method = RequestMethod.GET)
     public String getProper() {
-        return "some.proper is :"+proper;
+        return "some.proper is :" + proper;
     }
-
 
 
 }

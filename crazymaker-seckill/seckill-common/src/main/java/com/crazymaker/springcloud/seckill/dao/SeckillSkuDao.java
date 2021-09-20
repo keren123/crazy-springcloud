@@ -21,5 +21,5 @@ public interface SeckillSkuDao extends
     @Transactional
     @Modifying
     @Query("update SeckillSkuPO  g set g.stockCount = g.stockCount-1  where g.id = :id" )
-    int updateStockCountById(@Param("id" ) Long id);
+    int decreaseStockCountById(@Param("id" ) Long id);
 }

@@ -1,14 +1,10 @@
 package com.crazymaker.springcloud.standard.lock;
 
 import com.crazymaker.springcloud.common.exception.BusinessException;
-import com.crazymaker.springcloud.common.util.IOUtil;
 import com.crazymaker.springcloud.standard.context.SpringContextUtil;
 import com.crazymaker.springcloud.standard.lua.ScriptHolder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 
 import java.util.ArrayList;

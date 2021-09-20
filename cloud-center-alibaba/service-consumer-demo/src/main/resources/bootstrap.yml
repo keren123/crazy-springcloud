@@ -14,12 +14,12 @@ spring:
         server-addr: ${NACOS_SERVER:cdh1:8848}
         metadata:
           user:
-              name: "admin"
-              password: "admin"
+            name: "admin"
+            password: "admin"
           servlet:
-             context-path: /consumer
+            context-path: /consumer
           management:
-             context-path: ${server.servlet.context-path}/actuator
+            context-path: ${server.servlet.context-path}/actuator
       config:
         server-addr: ${NACOS_SERVER:cdh1:8848}
         prefix: nacos-config-demo

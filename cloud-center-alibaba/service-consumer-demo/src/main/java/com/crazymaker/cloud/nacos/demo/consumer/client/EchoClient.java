@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(
         value = "service-provider-demo", path = "/provider"
 )
-public interface EchoClient
-{
+public interface EchoClient {
     /**
      * 远程调用接口的方法:
      * 调用   demo-provider 的  REST 接口  api/demo/echo/{0}/v1
      * REST 接口 功能： 回显输入的信息
+     *
      * @return echo 回显消息 JSON 响应实例
      */
     @RequestMapping(value = "/echo/{word}",

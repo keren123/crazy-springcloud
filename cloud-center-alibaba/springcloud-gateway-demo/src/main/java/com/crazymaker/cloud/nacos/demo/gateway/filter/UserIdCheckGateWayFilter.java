@@ -15,11 +15,9 @@ import reactor.core.publisher.Mono;
 
 //@Component
 @Slf4j
-public class UserIdCheckGateWayFilter implements GatewayFilter, Ordered
-{
+public class UserIdCheckGateWayFilter implements GatewayFilter, Ordered {
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain)
-    {
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String url = exchange.getRequest().getPath().pathWithinApplication().value();
         log.info("请求URL:" + url);
         log.info("method:" + exchange.getRequest().getMethod());
@@ -34,8 +32,7 @@ public class UserIdCheckGateWayFilter implements GatewayFilter, Ordered
         String userId = exchange.getRequest().getHeaders().getFirst("user-id");
         log.info("userId：" + userId);
 
-        if (StringUtils.isBlank(userId))
-        {
+        if (StringUtils.isBlank(userId)) {
             log.info("*****头部验证不通过，请在头部输入  user-id");
             //终止请求，直接回应
             exchange.getResponse().setStatusCode(HttpStatus.NOT_ACCEPTABLE);
@@ -54,8 +51,7 @@ public class UserIdCheckGateWayFilter implements GatewayFilter, Ordered
 //    int HIGHEST_PRECEDENCE = -2147483648;
 //    int LOWEST_PRECEDENCE = 2147483647;
     @Override
-    public int getOrder()
-    {
+    public int getOrder() {
         return HIGHEST_PRECEDENCE;
     }
 }

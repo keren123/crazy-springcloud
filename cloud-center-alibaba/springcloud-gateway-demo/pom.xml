@@ -23,22 +23,22 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
         <!--新增sentinel-->
-       <dependency>
+        <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
         </dependency>
-     <!--    <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-transport-simple-http</artifactId>
-        </dependency>-->
+        <!--    <dependency>
+               <groupId>com.alibaba.csp</groupId>
+               <artifactId>sentinel-transport-simple-http</artifactId>
+           </dependency>-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
- <!--       <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-alibaba-sentinel</artifactId>
-        </dependency>-->
+        <!--       <dependency>
+                   <groupId>com.alibaba.cloud</groupId>
+                   <artifactId>spring-cloud-alibaba-sentinel</artifactId>
+               </dependency>-->
         <!-- nacos服务注册发现依赖-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

@@ -6,10 +6,10 @@ import com.crazymaker.springcloud.common.util.Encrypt;
 import com.crazymaker.springcloud.seckill.api.constant.SeckillConstants;
 import com.crazymaker.springcloud.seckill.api.dto.SeckillOrderDTO;
 import com.crazymaker.springcloud.seckill.api.dto.SimpleOrderDTO;
-import com.crazymaker.springcloud.seckill.dao.SeckillSkuDao;
 import com.crazymaker.springcloud.seckill.dao.SeckillOrderDao;
-import com.crazymaker.springcloud.seckill.dao.po.SeckillSkuPO;
+import com.crazymaker.springcloud.seckill.dao.SeckillSkuDao;
 import com.crazymaker.springcloud.seckill.dao.po.SeckillOrderPO;
+import com.crazymaker.springcloud.seckill.dao.po.SeckillSkuPO;
 import com.crazymaker.springcloud.standard.lock.RedisLockService;
 import com.crazymaker.springcloud.standard.lock.impl.ZkLockServiceImpl;
 import com.crazymaker.springcloud.standard.redis.RedisRepository;
@@ -225,7 +225,7 @@ public class SeckillServiceImpl {
 
         //减库存
 
-        seckillSkuDao.updateStockCountById(order.getSkuId());
+        seckillSkuDao.decreaseStockCountById(order.getSkuId());
     }
 
     @Transactional
@@ -263,7 +263,7 @@ public class SeckillServiceImpl {
 
 
         //减库存
-        seckillSkuDao.updateStockCountById(order.getSkuId());
+        seckillSkuDao.decreaseStockCountById(order.getSkuId());
 
 
         order.setMoney(sku.getCostPrice());

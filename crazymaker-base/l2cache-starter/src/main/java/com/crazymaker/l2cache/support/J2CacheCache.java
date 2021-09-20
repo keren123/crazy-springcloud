@@ -1,13 +1,13 @@
 package com.crazymaker.l2cache.support;
 
-import java.util.concurrent.Callable;
-
 import com.crazymaker.l2cache.manager.CacheChannel;
 import com.crazymaker.l2cache.manager.CacheObject;
 import com.crazymaker.l2cache.manager.NullObject;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.AbstractValueAdaptingCache;
 import org.springframework.cache.support.NullValue;
+
+import java.util.concurrent.Callable;
 
 
 /**

@@ -24,9 +24,8 @@ import java.util.List;
 @Component
 @Primary
 @AllArgsConstructor
-@Profile({"dev","sit"})
-public class SwaggerConfig implements SwaggerResourcesProvider
-{
+@Profile({"dev", "sit"})
+public class SwaggerConfig implements SwaggerResourcesProvider {
     public static final String API_URI = "/v2/api-docs";
 
     private final RouteLocator routeLocator;
@@ -34,8 +33,7 @@ public class SwaggerConfig implements SwaggerResourcesProvider
     private final GatewayProperties gatewayProperties;
 
     @Override
-    public List<SwaggerResource> get()
-    {
+    public List<SwaggerResource> get() {
         /**
          * 网关应用名称,不需要在网关的swagger 上展示
          */
@@ -60,8 +58,7 @@ public class SwaggerConfig implements SwaggerResourcesProvider
         return resources;
     }
 
-    private SwaggerResource swaggerResource(String name, String location)
-    {
+    private SwaggerResource swaggerResource(String name, String location) {
         SwaggerResource swaggerResource = new SwaggerResource();
         swaggerResource.setName(name);
         swaggerResource.setLocation(location);

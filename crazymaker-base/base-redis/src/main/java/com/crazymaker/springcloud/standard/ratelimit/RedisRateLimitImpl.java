@@ -1,25 +1,19 @@
 package com.crazymaker.springcloud.standard.ratelimit;
 
 import com.crazymaker.springcloud.common.distribute.rateLimit.RateLimitService;
-import com.crazymaker.springcloud.common.util.IOUtil;
 import com.crazymaker.springcloud.standard.lua.ScriptHolder;
 import com.crazymaker.springcloud.standard.properties.RedisRateLimitProperties;
 import com.google.common.collect.ImmutableList;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.crazymaker.springcloud.standard.lua.ScriptHolder.SECKILL_LUA_SHA_1;
-import static com.crazymaker.springcloud.standard.lua.ScriptHolder.getSeckillScript;
 
 /**
  * 实现：令牌桶限流服务

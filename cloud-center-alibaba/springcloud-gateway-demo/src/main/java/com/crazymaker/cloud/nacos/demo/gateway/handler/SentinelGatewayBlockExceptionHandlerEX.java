@@ -20,43 +20,35 @@ import java.util.List;
  * @ClassName SentinelGatewayBlockExceptionHandlerEX
  * @Description 异常处理器，定制异常信息
  */
-public class SentinelGatewayBlockExceptionHandlerEX extends SentinelGatewayBlockExceptionHandler
-{
+public class SentinelGatewayBlockExceptionHandlerEX extends SentinelGatewayBlockExceptionHandler {
     private List<ViewResolver> viewResolvers;
     private List<HttpMessageWriter<?>> messageWriters;
     private final Supplier<ServerResponse.Context> contextSupplier = () ->
     {
-        return new ServerResponse.Context()
-        {
+        return new ServerResponse.Context() {
             @Override
-            public List<HttpMessageWriter<?>> messageWriters()
-            {
+            public List<HttpMessageWriter<?>> messageWriters() {
                 return SentinelGatewayBlockExceptionHandlerEX.this.messageWriters;
             }
 
             @Override
-            public List<ViewResolver> viewResolvers()
-            {
+            public List<ViewResolver> viewResolvers() {
                 return SentinelGatewayBlockExceptionHandlerEX.this.viewResolvers;
             }
         };
     };
 
-    public SentinelGatewayBlockExceptionHandlerEX(List<ViewResolver> viewResolvers, ServerCodecConfigurer serverCodecConfigurer)
-    {
+    public SentinelGatewayBlockExceptionHandlerEX(List<ViewResolver> viewResolvers, ServerCodecConfigurer serverCodecConfigurer) {
         super(viewResolvers, serverCodecConfigurer);
         this.viewResolvers = viewResolvers;
         this.messageWriters = serverCodecConfigurer.getWriters();
     }
 
     @Override
-    public Mono<Void> handle(ServerWebExchange exchange, Throwable ex)
-    {
-        if (exchange.getResponse().isCommitted())
-        {
+    public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
+        if (exchange.getResponse().isCommitted()) {
             return Mono.error(ex);
-        } else
-        {
+        } else {
             return this.handleBlockedRequest(exchange, ex).flatMap((response) ->
             {
                 return this.writeResponse(response, exchange);
@@ -64,13 +56,11 @@ public class SentinelGatewayBlockExceptionHandlerEX extends SentinelGatewayBlock
         }
     }
 
-    private Mono<ServerResponse> handleBlockedRequest(ServerWebExchange exchange, Throwable throwable)
-    {
+    private Mono<ServerResponse> handleBlockedRequest(ServerWebExchange exchange, Throwable throwable) {
         return GatewayCallbackManager.getBlockHandler().handleRequest(exchange, throwable);
     }
 
-    private Mono<Void> writeResponse(ServerResponse response, ServerWebExchange exchange)
-    {
+    private Mono<Void> writeResponse(ServerResponse response, ServerWebExchange exchange) {
         ServerHttpResponse serverHttpResponse = exchange.getResponse();
         serverHttpResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
         RestOut<String> stringMasResponse = RestOut.error("对不起，被限流了");

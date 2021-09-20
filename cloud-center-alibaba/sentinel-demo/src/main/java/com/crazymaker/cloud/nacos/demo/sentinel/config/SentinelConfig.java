@@ -19,9 +19,8 @@ import java.util.List;
 
 
 @Configuration
-public class SentinelConfig
-{
-//    异常比例 (DEGRADE_GRADE_EXCEPTION_RATIO)
+public class SentinelConfig {
+    //    异常比例 (DEGRADE_GRADE_EXCEPTION_RATIO)
     private static void initDegradeRule_RATIO() {
         List<DegradeRule> rules = new ArrayList<DegradeRule>();
         DegradeRule rule = new DegradeRule();
@@ -46,9 +45,9 @@ public class SentinelConfig
         rules.add(rule);
         DegradeRuleManager.loadRules(rules);
     }
+
     @PostConstruct
-    public void initSentinelRule()
-    {
+    public void initSentinelRule() {
         //熔断规则： 5s内调用接口出现异常次数超过5的时候, 进行熔断
         List<DegradeRule> degradeRules = new ArrayList<>();
         DegradeRule rule = new DegradeRule();

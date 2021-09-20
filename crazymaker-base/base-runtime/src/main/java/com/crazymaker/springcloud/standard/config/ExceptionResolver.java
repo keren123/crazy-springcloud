@@ -6,9 +6,12 @@ import com.crazymaker.springcloud.common.result.RestOut;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +24,9 @@ import java.util.concurrent.TimeoutException;
 @RestControllerAdvice
 public class ExceptionResolver
 {
+
+
+
     /**
      * 其他异常
      */
@@ -39,7 +45,12 @@ public class ExceptionResolver
      * @return RestOut
      */
     @Order(1)
+    // 以json格式返回
+    @ResponseBody
+    // 捕获Exception类型的异常
     @ExceptionHandler(BusinessException.class)
+    // 自定义浏览器返回状态码
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RestOut<String> businessException(HttpServletRequest request, BusinessException e)
     {
         log.info(BUSINESS_EXCEPTION_MESSAGE + ":" + e.getErrMsg());
@@ -48,7 +59,10 @@ public class ExceptionResolver
 
 
     @Order(2)
+    // 捕获Exception类型的异常
     @ExceptionHandler(value = Exception.class)
+    // 自定义浏览器返回状态码
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RestOut<String> defaultException(Exception ex)
     {
         log.error("系统内部异常: ", ex);

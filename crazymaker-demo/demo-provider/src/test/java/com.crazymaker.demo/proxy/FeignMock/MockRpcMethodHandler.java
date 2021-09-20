@@ -3,8 +3,8 @@ package com.crazymaker.demo.proxy.FeignMock;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.crazymaker.springcloud.common.result.RestOut;
-import com.crazymaker.springcloud.common.util.JsonUtil;
 import com.crazymaker.springcloud.common.util.HttpRequestUtil;
+import com.crazymaker.springcloud.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.MessageFormat;

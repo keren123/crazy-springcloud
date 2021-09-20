@@ -7,20 +7,21 @@ import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //@Configuration
-public class WebMvcConfig implements WebMvcConfigurer
-{
-   
- 
+public class WebMvcConfig implements WebMvcConfigurer {
+
+
     @Override
     public void configureAsyncSupport(final AsyncSupportConfigurer configurer) {
         configurer.setDefaultTimeout(60 * 1000L);
         configurer.registerCallableInterceptors(timeoutInterceptor());
         configurer.setTaskExecutor(threadPoolTaskExecutor());
     }
+
     @Bean
     public TimeoutCallableProcessingInterceptor timeoutInterceptor() {
         return new TimeoutCallableProcessingInterceptor();
     }
+
     @Bean
     public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor t = new ThreadPoolTaskExecutor();

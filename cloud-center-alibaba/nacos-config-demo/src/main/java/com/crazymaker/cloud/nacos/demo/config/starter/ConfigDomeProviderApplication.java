@@ -16,6 +16,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class,
         ManagementWebSecurityAutoConfiguration.class,
         //排除db的自动配置
@@ -37,17 +38,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //启动Feign
 @EnableFeignClients(basePackages =
         {"com.crazymaker.cloud.nacos.demo.consumer.client"})
-public class ConfigDomeProviderApplication
-{
-    public static void main(String[] args)
-    {
+public class ConfigDomeProviderApplication {
+    public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = null;
-        try
-        {
+        try {
             applicationContext = SpringApplication.run(ConfigDomeProviderApplication.class, args);
             System.out.println("Server startup done.");
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("服务启动报错", e);
             return;
         }

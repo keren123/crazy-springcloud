@@ -14,20 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/flowControllDemo")
 @Api(tags = "FlowControllDemoController 流控演示")
 @Slf4j
-public class FlowControllDemoController
-{
+public class FlowControllDemoController {
     @SentinelResource(value = "test1", blockHandler = "exceptionHandler")
     @GetMapping("/test1")
-    public String test1()
-    {
+    public String test1() {
         log.info(Thread.currentThread().getName() + "\t" + "...test1");
         return "-------hello baby，i am test1";
     }
 
 
     // Block 异常处理函数，参数最后多一个 BlockException，其余与原函数一致.
-    public String exceptionHandler(BlockException ex)
-    {
+    public String exceptionHandler(BlockException ex) {
         // Do some log here.
         ex.printStackTrace();
         log.info(Thread.currentThread().getName() + "\t" + "...exceptionHandler");
@@ -36,8 +33,7 @@ public class FlowControllDemoController
 
     @SentinelResource(value = "test1_ref")
     @GetMapping("/test1_ref")
-    public String test1_ref()
-    {
+    public String test1_ref() {
         log.info(Thread.currentThread().getName() + "\t" + "...test1_related");
         return "-------hello baby，i am test1_ref";
     }
@@ -45,31 +41,28 @@ public class FlowControllDemoController
 
     @SentinelResource(value = "testWarmUP", blockHandler = "exceptionHandlerOfWarmUp")
     @GetMapping("/testWarmUP")
-    public String testWarmUP()
-    {
+    public String testWarmUP() {
         log.info(Thread.currentThread().getName() + "\t" + "...test1");
         return "-------hello baby，i am testWarmUP";
     }
 
     // Block 异常处理函数，参数最后多一个 BlockException，其余与原函数一致.
-    public String exceptionHandlerOfWarmUp(BlockException ex)
-    {
+    public String exceptionHandlerOfWarmUp(BlockException ex) {
         // Do some log here.
         ex.printStackTrace();
         log.info(Thread.currentThread().getName() + "\t" + "...exceptionHandler");
         return String.format("error: testWarmUP  is not OK");
     }
+
     @SentinelResource(value = "testLineUp", blockHandler = "exceptionHandlerOftestLineUp")
     @GetMapping("/testLineUp")
-    public String testLineUp()
-    {
+    public String testLineUp() {
         log.info(Thread.currentThread().getName() + "\t" + "...test1");
         return "-------hello baby，i am testLineUp";
     }
 
     // Block 异常处理函数，参数最后多一个 BlockException，其余与原函数一致.
-    public String exceptionHandlerOftestLineUp(BlockException ex)
-    {
+    public String exceptionHandlerOftestLineUp(BlockException ex) {
         // Do some log here.
         ex.printStackTrace();
         log.info(Thread.currentThread().getName() + "\t" + "...exceptionHandler");
@@ -78,8 +71,7 @@ public class FlowControllDemoController
 
 
     @GetMapping("/test2")
-    public String test2()
-    {
+    public String test2() {
         int num = 1 / 0;
         log.info(Thread.currentThread().getName() + "\t" + "...test2");
         return "------测试异常数，i am test2";
@@ -88,8 +80,7 @@ public class FlowControllDemoController
 
     @GetMapping("/test3")
     @SentinelResource(value = "byUrl")
-    public String test3()
-    {
+    public String test3() {
         log.info(Thread.currentThread().getName() + "\t" + "...test3");
         return "------按url限流测试OK，i am test3";
     }
@@ -98,18 +89,16 @@ public class FlowControllDemoController
     @SentinelResource(value = "byHotKey",
             blockHandler = "skuAccessError", fallback = "skuAccessFallback")
     public String test4(@RequestParam(value = "userId", required = false) String userId,
-                        @RequestParam(value = "skuId", required = false) int skuId)
-    {
+                        @RequestParam(value = "skuId", required = false) int skuId) {
         log.info(Thread.currentThread().getName() + "\t" + "...byHotKey");
-       return "-----------by HotKey： skuId：" +skuId;
+        return "-----------by HotKey： skuId：" + skuId;
     }
 
-    public String skuAccessFallback(String userId, int skuId)
-    {
+    public String skuAccessFallback(String userId, int skuId) {
         return "------skuAccessFallback，i am blocked  byHotKey";
     }
-    public String skuAccessError(String userId, int skuId, BlockException exception)
-    {
+
+    public String skuAccessError(String userId, int skuId, BlockException exception) {
 
         return "------skuAccessError，Error  byHotKey";
     }
@@ -120,8 +109,7 @@ public class FlowControllDemoController
             blockHandlerClass = CustomerBlockHandler.class,
             blockHandler = "userAccessError")
     public String test5(@RequestParam(value = "userId", required = false) String userId,
-                        @RequestParam(value = "skuId", required = false) String skuId)
-    {
+                        @RequestParam(value = "skuId", required = false) String skuId) {
         log.info(Thread.currentThread().getName() + "\t" + "...test4");
         return "-----------by HotKey： UserId";
     }

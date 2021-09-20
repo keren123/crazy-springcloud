@@ -40,17 +40,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //启动Feign
 @EnableFeignClients(basePackages =
         {"com.crazymaker.cloud.nacos.demo.consumer.client"})
-public class SentinelDomeProviderApplication
-{
-    public static void main(String[] args)
-    {
+public class SentinelDomeProviderApplication {
+    public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = null;
-        try
-        {
+        try {
             applicationContext = SpringApplication.run(SentinelDomeProviderApplication.class, args);
             System.out.println("Server startup done.");
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("服务启动报错", e);
             return;
         }

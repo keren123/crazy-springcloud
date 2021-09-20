@@ -39,21 +39,17 @@ import org.springframework.core.env.Environment;
                         "com.crazymaker.springcloud.standard"
                 })
 
-public class GatewayProviderApplication
-{
-    public static void main(String[] args)
-    {
+public class GatewayProviderApplication {
+    public static void main(String[] args) {
 
         //在服务的启动命令中加上 -Dcsp.sentinel.app.type=1
         // 或者
 //        System.setProperty("csp.sentinel.app.type", "1");
         ConfigurableApplicationContext applicationContext = null;
-        try
-        {
+        try {
             applicationContext = SpringApplication.run(GatewayProviderApplication.class, args);
             System.out.println("Server startup done.");
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("服务启动报错", e);
             return;
         }
@@ -63,8 +59,7 @@ public class GatewayProviderApplication
         String name = env.getProperty("spring.application.name");
 
         String path = env.getProperty("server.servlet.context-path");
-        if (StringUtils.isBlank(path))
-        {
+        if (StringUtils.isBlank(path)) {
             path = "";
         }
         String ip = env.getProperty("spring.cloud.client.ip-address");

@@ -27,10 +27,19 @@
         <!--Nacos 配置-->
         <module>nacos-config-demo</module>
 
-       <!--sentinel 模块-->
+        <!--sentinel 模块-->
         <module>sentinel-demo</module>
-    <!--gateway 模块-->
+        <!--gateway 模块-->
         <module>SpringCloud-gateway-demo</module>
+
+        <!--分布式事务 模块-->
+
+        <module>seata-seckill-demo</module>
+        <module>seata-order-demo</module>
+        <module>seata-stock-demo</module>
+        <module>TCC-seckill-demo</module>
+        <module>TCC-order-demo</module>
+        <module>TCC-stock-demo</module>
 
     </modules>
 
