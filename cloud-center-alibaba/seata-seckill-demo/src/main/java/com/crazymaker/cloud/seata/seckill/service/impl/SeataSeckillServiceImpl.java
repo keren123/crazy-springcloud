@@ -21,6 +21,7 @@ public class SeataSeckillServiceImpl {
     private SeataDemoStockFeignClient orderFeignClient;
 
     /**
+     * TM
      * 减库存，下订单
      */
     @GlobalTransactional  //开启全局事务（重点） 使用 seata 的全局事务
