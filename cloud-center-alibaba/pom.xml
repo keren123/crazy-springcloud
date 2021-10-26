@@ -41,6 +41,10 @@
         <module>TCC-order-demo</module>
         <module>TCC-stock-demo</module>
 
+        <!--高可用中间件 演示-->
+
+        <module>ha-middleware-demo</module>
+
     </modules>
 
 

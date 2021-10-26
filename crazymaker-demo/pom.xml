@@ -19,6 +19,8 @@
         <!--远程客户端模块-->
         <module>demo-client</module>
         <module>sharding-jdbc-provider</module>
+
+
     </modules>
 
     <!-- 引入 spring-cloud模块 -->
