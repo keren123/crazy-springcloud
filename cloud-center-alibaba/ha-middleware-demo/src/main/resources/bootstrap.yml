@@ -28,16 +28,16 @@ spring:
         group: DEFAULT_GROUP
         # 控制台创建命名空间得到的uuid
         file-extension: yml
-        ext-config:
-          - data-id: crazymaker-db-dev.yml
-            group: DEFAULT_GROUP
-            refresh: true
-          - data-id: crazymaker-redis-dev.yml
-            group: DEFAULT_GROUP
-            refresh: true
-          - data-id: crazymaker-common-dev.yml
-            group: DEFAULT_GROUP
-            refresh: true
+#        ext-config:
+#          - data-id: crazymaker-db-dev.yml
+#            group: DEFAULT_GROUP
+#            refresh: true
+#          - data-id: crazymaker-redis-dev.yml
+#            group: DEFAULT_GROUP
+#            refresh: true
+#          - data-id: crazymaker-common-dev.yml
+#            group: DEFAULT_GROUP
+#            refresh: true
     #    alibaba:
     #      seata:
     #        tx-service-group: ha-middleware-demo-seata-service-group

@@ -1,7 +1,21 @@
 
 rocketmq:
-  address: 172.18.8.164:10911;172.18.8.164:10921
+  address: 172.18.8.164:9876;172.18.8.164:9877
 
 elasticsearch:
-    ips: 172.18.8.164:19200
+  address: 172.18.8.164:19200
 
+
+#  http://172.18.8.164:19991/minio/ 建立 bucket
+minio:
+  access: AKIAIOSFODNN7EXAMPLE
+  bucket: test
+  secret: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  url: http://172.18.8.164:19991
+
+spring:
+  # 配置文件上传大小限制
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB

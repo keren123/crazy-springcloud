@@ -56,7 +56,7 @@
         <zookeeper.version>3.4.8</zookeeper.version>
         <env.version>1.0-SNAPSHOT</env.version>
         <!--        <kafka.version>1.0.0</kafka.version>-->
-        <rocketmq-client.version>4.7.0</rocketmq-client.version>
+        <rocketmq-client.version>4.6.0</rocketmq-client.version>
 <!--        <rocketmq-client.version>4.4.0</rocketmq-client.version>-->
         <caffeine.version>2.6.2</caffeine.version>
         <kafka.version>0.11.0.2</kafka.version>
@@ -119,6 +119,9 @@
         <commons-io.version>2.6</commons-io.version>
         <commons-dbcp.version>2.1.1</commons-dbcp.version>
         <slf4j.version>1.7.25</slf4j.version>
+        <io.minio.version>8.3.0</io.minio.version>
+        <okhttp.version>4.8.1</okhttp.version>
+<!--        <io.minio.version>7.0.2</io.minio.version>-->
     </properties>
 
     <!-- 引入 spring-cloud模块 -->

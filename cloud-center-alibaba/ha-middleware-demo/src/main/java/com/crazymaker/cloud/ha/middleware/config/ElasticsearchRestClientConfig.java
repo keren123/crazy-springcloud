@@ -38,7 +38,7 @@ public class ElasticsearchRestClientConfig {
     /**
      * 使用冒号隔开ip和端口1
      */
-    @Value("${elasticsearch.ips}")
+    @Value("${elasticsearch.address}")
     String[] ipAddress;
 
     @Bean
