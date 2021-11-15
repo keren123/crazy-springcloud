@@ -168,7 +168,6 @@ public class ProxyTester {
         }
 
     }
-
     /**
      * 动态代理测试
      */
@@ -181,9 +180,9 @@ public class ProxyTester {
                     System.out.println("匿名的 br is invoked!");
                 }
             });
-            // 这里有两种写法，采用复杂的一种写法，有助于理解。
-            FinalFoo foo = (FinalFoo) Proxy.newProxyInstance(FooInvocationHandler.class.getClassLoader(),
-                    new Class<?>[]{FinalFoo.class}, handler);
+            // 这里有两种写法，采用复杂的一种简单写法，对比上面的写法，有助于理解。
+            Foo foo = (Foo) Proxy.newProxyInstance(FooInvocationHandler.class.getClassLoader(),
+                    new Class<?>[]{Foo.class}, handler);
             foo.bar();
 
 
@@ -192,6 +191,7 @@ public class ProxyTester {
         }
 
     }
+
     /**
      * 动态代理测试
      */
@@ -204,8 +204,8 @@ public class ProxyTester {
                     System.out.println("匿名的 br is invoked!");
                 }
             });
-            // 这里有两种写法，采用复杂的一种写法，有助于理解。
-            Foo foo = (Foo) Proxy.newProxyInstance(FooInvocationHandler.class.getClassLoader(),
+            // 面试题：被final修饰的类可以被spring代理吗？
+            FinalFoo foo = (FinalFoo) Proxy.newProxyInstance(FooInvocationHandler.class.getClassLoader(),
                     new Class<?>[]{FinalFoo.class}, handler);
             foo.bar();
 
@@ -215,4 +215,5 @@ public class ProxyTester {
         }
 
     }
+
 }
