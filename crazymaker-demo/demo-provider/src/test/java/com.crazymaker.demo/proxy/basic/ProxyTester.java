@@ -182,8 +182,8 @@ public class ProxyTester {
                 }
             });
             // 这里有两种写法，采用复杂的一种写法，有助于理解。
-            Foo foo = (Foo) Proxy.newProxyInstance(FooInvocationHandler.class.getClassLoader(),
-                    new Class<?>[]{Foo.class}, handler);
+            FinalFoo foo = (FinalFoo) Proxy.newProxyInstance(FooInvocationHandler.class.getClassLoader(),
+                    new Class<?>[]{FinalFoo.class}, handler);
             foo.bar();
 
 
