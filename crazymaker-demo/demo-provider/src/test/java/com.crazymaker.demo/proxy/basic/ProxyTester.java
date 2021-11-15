@@ -114,11 +114,6 @@ public class ProxyTester {
         void bar();
     }
 
-    public final class FinalFoo {
-        void bar(){
-            System.out.println("final class FinalFoo 的 bar 方法 is invoked!");
-        }
-    }
 
     public class FooInvocationHandler implements InvocationHandler {
         Object target = null;
@@ -192,18 +187,34 @@ public class ProxyTester {
 
     }
 
+    // 面试题：被final修饰的类可以被spring代理吗？
+
+    public final class FinalFoo {
+        void bar(){
+            System.out.println("final class FinalFoo 的 bar 方法 is invoked!");
+        }
+    }
+
+    public class FinalFooInvocationHandler implements InvocationHandler {
+        FinalFoo target = null;
+
+        public FinalFooInvocationHandler(FinalFoo target) {
+            this.target = target;
+        }
+
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            System.out.println("method :" + method.getName() + " is invoked!");
+            return method.invoke(target, args); // 执行相应的目标方法
+        }
+    }
+
     /**
      * 动态代理测试
      */
     @Test
     public void simpleDynamicProxyTest3() {
         try {
-            FooInvocationHandler handler = new FooInvocationHandler(new Foo() {
-                @Override
-                public void bar() {
-                    System.out.println("匿名的 br is invoked!");
-                }
-            });
+            FinalFooInvocationHandler handler = new FinalFooInvocationHandler(new FinalFoo());
             // 面试题：被final修饰的类可以被spring代理吗？
             FinalFoo foo = (FinalFoo) Proxy.newProxyInstance(FooInvocationHandler.class.getClassLoader(),
                     new Class<?>[]{FinalFoo.class}, handler);
