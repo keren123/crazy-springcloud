@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-@RestController
+//@RestController
 @RequestMapping("/upload/")
 public class MinIOFileController {
 

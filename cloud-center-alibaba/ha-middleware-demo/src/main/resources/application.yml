@@ -2,8 +2,11 @@
 rocketmq:
   address: 172.18.8.164:9876;172.18.8.164:9877
 
+#elasticsearch:
+#  address: cdh2:19200
+
 elasticsearch:
-  address: 172.18.8.164:19200
+  address: 192.168.56.122:19200
 
 
 #  http://172.18.8.164:19991/minio/ 建立 bucket

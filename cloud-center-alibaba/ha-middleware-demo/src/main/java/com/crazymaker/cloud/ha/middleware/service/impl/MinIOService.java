@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 
-@Service
+//@Service
 public class MinIOService {
     Logger log = LoggerFactory.getLogger(MinIOService.class);
 

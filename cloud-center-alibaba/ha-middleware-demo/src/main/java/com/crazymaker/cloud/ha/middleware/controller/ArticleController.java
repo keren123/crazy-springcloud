@@ -42,9 +42,7 @@ public class ArticleController {
     //搜索服务
     @ApiOperation(value = "根据请求参数值")
     @RequestMapping(value = "/param", method = RequestMethod.GET)
-    public String echo(@RequestParam(value = "title", required = false) String title
-
-    ) {
+    public String search(@RequestParam(value = "title", required = false) String title) {
         String index = "article";
         SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder searchSource = new SearchSourceBuilder()
@@ -76,13 +74,14 @@ public class ArticleController {
     public void testAddDoc() throws IOException {
 
         UpdateRequest updateRequest = new UpdateRequest("index", "id");
-        Map<String, Object> valsMap = new HashMap<>();
-        valsMap.put("keywords", "key");
-        valsMap.put("question", "qa.getQuestion()");
-        updateRequest.doc(JSON.toJSONString(valsMap), XContentType.JSON);
+        Map<String, Object> hashMap = new HashMap<>();
+        hashMap.put("keywords", "key");
+        hashMap.put("question", "qa.getQuestion()");
+        updateRequest.doc(JSON.toJSONString(hashMap), XContentType.JSON);
         highLevelClient.update(updateRequest, RequestOptions.DEFAULT);
 
     }
+
     public boolean testEsRestClient() {
         String index = "article";
         SearchRequest searchRequest = new SearchRequest(index);
@@ -107,7 +106,7 @@ public class ArticleController {
         }
     }
 
-    public  void create(String index) throws IOException {
+    public void create(String index) throws IOException {
         // 创建索引请求
         CreateIndexRequest request = new CreateIndexRequest(index);
 
@@ -150,7 +149,7 @@ public class ArticleController {
                 .endObject()
                 .endObject()
                 .endObject();
-        request.mapping("article2",mapping);
+        request.mapping("article2", mapping);
         highLevelClient.indices().create(request, RequestOptions.DEFAULT);
 
     }
