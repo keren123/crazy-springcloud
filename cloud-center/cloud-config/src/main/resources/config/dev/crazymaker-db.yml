@@ -14,7 +14,7 @@ spring:
       max-wait: 60000
       min-evictable-idle-time-millis: 300000   # 指定一个空闲连接最少空闲多久后可被清除，单位是毫秒
       min-idle: 0
-      test-on-borrow:SessionTypeFilter.java false  # 当从连接池借用连接时，是否测试该连接
+      test-on-borrow: false  # 当从连接池借用连接时，是否测试该连接
       test-on-return: false   # 在连接归还到连接池时是否测试该连接
       test-while-idle: true  # 当连接空闲时，是否执行连接测试
       time-between-eviction-runs-millis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
