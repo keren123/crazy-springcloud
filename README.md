@@ -1,5 +1,6 @@
 # 欢迎一一起来学，一起交流
 
+> 点击下面的链接，成为仓库成员
 
 https://gitee.com/crazymaker/crazy-springcloud/invite_link?invite=975433315f080451b6f69f066a74ff6cb5ae2fc946cdbcb930bab53ef47d10669aa05c155a0274b863ce7e16acfba504
 
