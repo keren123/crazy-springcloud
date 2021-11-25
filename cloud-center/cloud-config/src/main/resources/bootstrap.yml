@@ -19,7 +19,7 @@ spring:
   cloud:
     inetutils:
       timeout-seconds: 10
-        preferred-networks: ${SCAFFOLD_PREFERRED_NETWORKS:192.168.68.}
+      preferred-networks: ${SCAFFOLD_PREFERRED_NETWORKS:192.168.68.}
       prefer-ip-address: true  #访问路径可以显示IP地址
 
 eureka:
