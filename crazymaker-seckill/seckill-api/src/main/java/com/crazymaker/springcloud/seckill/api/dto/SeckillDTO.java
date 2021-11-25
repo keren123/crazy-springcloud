@@ -31,11 +31,11 @@ public class SeckillDTO implements Serializable
     private Long seckillSkuId;
 
     //秒杀令牌（排队码）
-    @ApiModelProperty(value = "秒杀令牌（排队码）",example = "1156308907673518080")
+    @ApiModelProperty(value = "秒杀令牌（排队码）",example = "\"1156308907673518080\"")
     private String seckillToken;
 
     //暴露地址
-    @ApiModelProperty(value = "暴露地址",example = "1156308907673518080")
+    @ApiModelProperty(value = "暴露地址",example = "\"1156308907673518080\"")
     private String exposedKey;
 
     //秒杀库存
