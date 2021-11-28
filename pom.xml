@@ -62,6 +62,7 @@
         <kafka.version>0.11.0.2</kafka.version>
         <kafka.scala.version>2.11</kafka.scala.version>
         <httpclient.version>4.5.1</httpclient.version>
+        <feign-httpclient.version>10.2.3</feign-httpclient.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
