@@ -71,7 +71,7 @@ public class DemoRPCController
         /**
          * 根据实际的地址调整：UAA 服务的获取用户信息地址
          */
-        String url = "http://localhost:7700/demo-provider/api/demo/hello/v1";
+        String url = "http://localhost:7700/demo-provider/api/demo/hello/1";
         /**
          *  使用建造者的build()方法，建造 restTemplate 实例
          */
