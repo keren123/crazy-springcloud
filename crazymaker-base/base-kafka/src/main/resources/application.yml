@@ -7,9 +7,10 @@ spring:
 
 mq:
   kafka:
-    bootstrap-server: 192.168.68.128:9092
-    zookeeper-server: 192.168.68.128:2181
+    bootstrap-server: cdh1:9092
+    zookeeper-server: cdh1:2181
     retry-count: 2
+    subscribed: topic1,EmptyConsumer;topic2,EmptyConsumer;topic3,EmptyConsumer
 http:
   connection:
-     keepAliveTimeout: 60000
+    keepAliveTimeout: 60000

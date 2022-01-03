@@ -11,14 +11,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-/**
- * 描述: 抽象消费者
- *
- * @author wangpengpeng
- * @create 2020-07-05 14:34
- */
 @Slf4j
-public class KafkaProducerServer extends AbstractKafkaMqProducer {
+public class KafkaProducer extends AbstractKafkaMqProducer {
 
     @Override
     public String send(ProduceMessage message) {

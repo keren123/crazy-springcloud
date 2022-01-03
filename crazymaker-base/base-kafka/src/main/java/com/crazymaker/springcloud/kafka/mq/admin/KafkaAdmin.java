@@ -19,17 +19,7 @@ package com.crazymaker.springcloud.kafka.mq.admin;
 import com.crazymaker.springcloud.common.exception.BusinessException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.Config;
-import org.apache.kafka.clients.admin.CreateTopicsResult;
-import org.apache.kafka.clients.admin.DeleteTopicsResult;
-import org.apache.kafka.clients.admin.DescribeConfigsResult;
-import org.apache.kafka.clients.admin.DescribeTopicsResult;
-import org.apache.kafka.clients.admin.ListTopicsOptions;
-import org.apache.kafka.clients.admin.ListTopicsResult;
-import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.admin.TopicDescription;
-import org.apache.kafka.clients.admin.TopicListing;
+import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.common.KafkaFuture;
 import org.apache.kafka.common.config.ConfigResource;
 import org.apache.kafka.common.config.TopicConfig;
@@ -39,14 +29,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -62,8 +45,7 @@ import static com.crazymaker.springcloud.common.util.BeanUtil.asList;
  * @author Gary Russell
  * @since 1.3
  */
-public class KafkaAdmin implements ApplicationContextAware
-{
+public class KafkaAdmin implements ApplicationContextAware {
 
     private static final int DEFAULT_CLOSE_TIMEOUT = 10;
 
@@ -90,26 +72,20 @@ public class KafkaAdmin implements ApplicationContextAware
      *
      * @param config the configuration for the {@link AdminClient}.
      */
-    public KafkaAdmin(Map<String, Object> config)
-    {
+    public KafkaAdmin(Map<String, Object> config) {
         this.config = new HashMap<>(config);
         refreshAdmin();
     }
 
-    private void refreshAdmin()
-    {
+    private void refreshAdmin() {
 
-        if(null!=adminClient)
-        {
+        if (null != adminClient) {
             adminClient.close();
         }
-        try
-        {
+        try {
             adminClient = AdminClient.create(this.config);
-        } catch (Exception e)
-        {
-            if (!this.initializingContext || this.fatalIfBrokerNotAvailable)
-            {
+        } catch (Exception e) {
+            if (!this.initializingContext || this.fatalIfBrokerNotAvailable) {
                 throw new IllegalStateException("Could not create admin", e);
             }
         }
@@ -120,8 +96,7 @@ public class KafkaAdmin implements ApplicationContextAware
      *
      * @param closeTimeout the timeout.
      */
-    public void setCloseTimeout(int closeTimeout)
-    {
+    public void setCloseTimeout(int closeTimeout) {
         this.closeTimeout = closeTimeout;
     }
 
@@ -130,8 +105,7 @@ public class KafkaAdmin implements ApplicationContextAware
      *
      * @param operationTimeout the timeout.
      */
-    public void setOperationTimeout(int operationTimeout)
-    {
+    public void setOperationTimeout(int operationTimeout) {
         this.operationTimeout = operationTimeout;
     }
 
@@ -141,8 +115,7 @@ public class KafkaAdmin implements ApplicationContextAware
      *
      * @param fatalIfBrokerNotAvailable true to fail.
      */
-    public void setFatalIfBrokerNotAvailable(boolean fatalIfBrokerNotAvailable)
-    {
+    public void setFatalIfBrokerNotAvailable(boolean fatalIfBrokerNotAvailable) {
         this.fatalIfBrokerNotAvailable = fatalIfBrokerNotAvailable;
     }
 
@@ -152,8 +125,7 @@ public class KafkaAdmin implements ApplicationContextAware
      *
      * @return the configuration map.
      */
-    public Map<String, Object> getConfig()
-    {
+    public Map<String, Object> getConfig() {
         return Collections.unmodifiableMap(this.config);
     }
 
@@ -162,30 +134,22 @@ public class KafkaAdmin implements ApplicationContextAware
     /**
      * Call this method to check/add topics; this might be needed if the broker was not
      */
-    public final boolean add(Collection<NewTopic> newTopics)
-    {
+    public final boolean add(Collection<NewTopic> newTopics) {
         refreshAdmin();
-        if (newTopics.size() > 0)
-        {
+        if (newTopics.size() > 0) {
 
-            if (adminClient != null)
-            {
-                try
-                {
+            if (adminClient != null) {
+                try {
                     addTopicsIfNeeded(newTopics);
                     return true;
-                } catch (Throwable e)
-                {
-                    if (e instanceof Error)
-                    {
+                } catch (Throwable e) {
+                    if (e instanceof Error) {
                         throw (Error) e;
                     }
-                    if (!this.initializingContext || this.fatalIfBrokerNotAvailable)
-                    {
+                    if (!this.initializingContext || this.fatalIfBrokerNotAvailable) {
                         throw new IllegalStateException("Could not configure topics", e);
                     }
-                } finally
-                {
+                } finally {
                     this.initializingContext = false;
                     adminClient.close(this.closeTimeout, TimeUnit.SECONDS);
                 }
@@ -195,11 +159,9 @@ public class KafkaAdmin implements ApplicationContextAware
         return false;
     }
 
-    private void addTopicsIfNeeded(Collection<NewTopic> topics) throws Throwable
-    {
+    private void addTopicsIfNeeded(Collection<NewTopic> topics) throws Throwable {
         refreshAdmin();
-        if (topics.size() > 0)
-        {
+        if (topics.size() > 0) {
             Map<String, NewTopic> topicNameToTopic = new HashMap<>();
             topics.forEach(t -> topicNameToTopic.compute(t.name(), (k, v) -> v = t));
             DescribeTopicsResult topicInfo = adminClient
@@ -209,44 +171,33 @@ public class KafkaAdmin implements ApplicationContextAware
             List<NewTopic> topicsToAdd = new ArrayList<>();
             topicInfo.values().forEach((n, f) ->
             {
-                try
-                {
+                try {
                     TopicDescription topicDescription = f.get(this.operationTimeout, TimeUnit.SECONDS);
-                    if (topicNameToTopic.get(n).numPartitions() != topicDescription.partitions().size())
-                    {
-                        if (logger.isInfoEnabled())
-                        {
+                    if (topicNameToTopic.get(n).numPartitions() != topicDescription.partitions().size()) {
+                        if (logger.isInfoEnabled()) {
                             logger.info(String.format(
                                     "Topic '%s' exists but has a different partition count: %d not %d", n,
                                     topicDescription.partitions().size(), topicNameToTopic.get(n).numPartitions()));
                         }
                     }
-                } catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                } catch (TimeoutException e)
-                {
+                } catch (TimeoutException e) {
                     throw new BusinessException("Timed out waiting to get existing topics");
-                } catch (ExecutionException e)
-                {
+                } catch (ExecutionException e) {
                     topicsToAdd.add(topicNameToTopic.get(n));
                 }
             });
-            if (topicsToAdd.size() > 0)
-            {
+            if (topicsToAdd.size() > 0) {
                 CreateTopicsResult topicResults = adminClient.createTopics(topicsToAdd);
-                try
-                {
+                try {
                     topicResults.all().get(this.operationTimeout, TimeUnit.SECONDS);
-                } catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     logger.error("Interrupted while waiting for topic creation results", e);
-                } catch (TimeoutException e)
-                {
+                } catch (TimeoutException e) {
                     throw new BusinessException("Timed out waiting for create topics results");
-                } catch (ExecutionException e)
-                {
+                } catch (ExecutionException e) {
                     logger.error("Failed to create topics", e.getCause());
                     throw new BusinessException("Failed to create topics");
                 }
@@ -264,8 +215,7 @@ public class KafkaAdmin implements ApplicationContextAware
      * @see BeanInitializationException
      */
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
-    {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 
@@ -273,20 +223,16 @@ public class KafkaAdmin implements ApplicationContextAware
     /**
      * 列出所有kakfa topic 信息 默认不会列出kafka内部的topic 超时时间默认
      */
-    public Set<String> listTopics()
-    {
+    public Set<String> listTopics() {
         refreshAdmin();
         ListTopicsResult listTopic = this.adminClient.listTopics();
-        try
-        {
+        try {
             return listTopic.names().get();
-        } catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
             throw new BusinessException("查看 topic list 失败");
 
-        } catch (ExecutionException e)
-        {
+        } catch (ExecutionException e) {
             e.printStackTrace();
             throw new BusinessException("查看 topic list 失败");
         }
@@ -296,16 +242,14 @@ public class KafkaAdmin implements ApplicationContextAware
      * check topic 是否存在
      */
     private Map<String, Boolean> checkExists(Set<String> topicSames)
-            throws InterruptedException, ExecutionException
-    {
+            throws InterruptedException, ExecutionException {
         refreshAdmin();
         Map<String, Boolean> result = new HashMap<String, Boolean>(1 << 4);
         Set<String> kafkaTopicSet = new HashSet<String>(1 << 4);
 
         kafkaTopicSet.addAll(this.listTopics());
 
-        for (String topicName : topicSames)
-        {
+        for (String topicName : topicSames) {
             result.put(topicName, kafkaTopicSet.contains(topicName));
         }
         return result;
@@ -314,8 +258,7 @@ public class KafkaAdmin implements ApplicationContextAware
     /**
      * check topic 是否存在 默认不检查 kafka内部topic
      */
-    public boolean checkExists(String topicName) throws InterruptedException, ExecutionException
-    {
+    public boolean checkExists(String topicName) throws InterruptedException, ExecutionException {
         refreshAdmin();
         Set<String> set = new HashSet<String>(1 << 4);
         set.add(topicName);
@@ -328,8 +271,7 @@ public class KafkaAdmin implements ApplicationContextAware
      * 来判断资源类型
      */
     public Config descConfigs(ConfigResource.Type type, String resourceName)
-            throws InterruptedException, ExecutionException
-    {
+            throws InterruptedException, ExecutionException {
         refreshAdmin();
         ConfigResource resource = new ConfigResource(type, resourceName);
         DescribeConfigsResult describeResult = this.adminClient.describeConfigs(Collections.singleton(resource));
@@ -342,24 +284,19 @@ public class KafkaAdmin implements ApplicationContextAware
      * 来判断资源类型
      */
     public Map<String, Config> descConfigs(Collection<String> topicNames)
-            throws InterruptedException, ExecutionException
-    {
+            throws InterruptedException, ExecutionException {
         refreshAdmin();
         Map<String, Config> result = new HashMap<String, Config>(1 << 4);
         List<ConfigResource> list = new ArrayList<ConfigResource>(1 << 4);
-        for (String name : topicNames)
-        {
+        for (String name : topicNames) {
             list.add(new ConfigResource(ConfigResource.Type.TOPIC, name));
         }
         DescribeConfigsResult describeResult = this.adminClient.describeConfigs(list);
         Map<ConfigResource, Config> topicConfig = describeResult.all().get();
-        for (ConfigResource res : list)
-        {
-            try
-            {
+        for (ConfigResource res : list) {
+            try {
                 result.put(res.name(), topicConfig.get(res));
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error(e);
             }
         }
@@ -369,19 +306,15 @@ public class KafkaAdmin implements ApplicationContextAware
     /**
      * 获取某些topics详细信息
      */
-    public Map<String, TopicDescription> descTopics(Collection<String> topicNames)
-    {
+    public Map<String, TopicDescription> descTopics(Collection<String> topicNames) {
         refreshAdmin();
         Map<String, TopicDescription> result = new HashMap<String, TopicDescription>(1 << 4);
         Map<String, KafkaFuture<TopicDescription>> describeFutures = this.adminClient.describeTopics(topicNames)
                 .values();
-        for (String topicName : topicNames)
-        {
-            try
-            {
+        for (String topicName : topicNames) {
+            try {
                 result.put(topicName, describeFutures.get(topicName).get());
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error(e);
             }
         }
@@ -391,21 +324,17 @@ public class KafkaAdmin implements ApplicationContextAware
     /**
      * 获取topics详细信息
      */
-    public TopicDescription descTopic(String topicName)
-    {
+    public TopicDescription descTopic(String topicName) {
         refreshAdmin();
         Collection<String> list = asList(topicName);
         Map<String, KafkaFuture<TopicDescription>> describeFutures = this.adminClient.describeTopics(list)
                 .values();
-        try
-        {
+        try {
             return describeFutures.get(topicName).get();
-        } catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             throw new BusinessException("查看 topic 失败");
 
-        } catch (ExecutionException e)
-        {
+        } catch (ExecutionException e) {
             throw new BusinessException("查看 topic 失败");
 
         }
@@ -418,8 +347,7 @@ public class KafkaAdmin implements ApplicationContextAware
      * Integer(3000));
      */
     public Map<String, TopicListing> listTopics(ListTopicsOptions options)
-            throws InterruptedException, ExecutionException
-    {
+            throws InterruptedException, ExecutionException {
         refreshAdmin();
         ListTopicsResult listTopic = this.adminClient.listTopics(options);
         KafkaFuture<Map<String, TopicListing>> kfuture = listTopic.namesToListings();
@@ -431,8 +359,7 @@ public class KafkaAdmin implements ApplicationContextAware
      *
      * @throws Exception
      */
-    public boolean createTopic(String topicName, int numPartitions, short replicationFactor) throws Exception
-    {
+    public boolean createTopic(String topicName, int numPartitions, short replicationFactor) throws Exception {
         refreshAdmin();
         return this.createTopic(topicName, numPartitions, replicationFactor, null);
     }
@@ -443,11 +370,9 @@ public class KafkaAdmin implements ApplicationContextAware
      * @throws Exception
      */
     public boolean createTopicIfNotExists(String topicName, int numPartitions, short replicationFactor, long ttl)
-            throws Exception
-    {
+            throws Exception {
         refreshAdmin();
-        if (!this.checkExists(topicName))
-        {
+        if (!this.checkExists(topicName)) {
             Map<String, String> configs = new HashMap<>(1 << 3);
             configs.put(TopicConfig.RETENTION_MS_CONFIG, ttl + "");
             configs.put(TopicConfig.DELETE_RETENTION_MS_CONFIG, ttl + "");
@@ -462,31 +387,26 @@ public class KafkaAdmin implements ApplicationContextAware
      * @throws Exception
      */
     public boolean createTopicIfNotExists(String topicName, int numPartitions, short replicationFactor,
-                                          Map<String, String> topicConfig) throws Exception
-    {
+                                          Map<String, String> topicConfig) throws Exception {
         refreshAdmin();
-        if (this.checkExists(topicName))
-        {
+        if (this.checkExists(topicName)) {
             return this.createTopic(topicName, numPartitions, replicationFactor, topicConfig);
         }
         return true;
     }
 
     private boolean createTopic(String topicName, int numPartitions, short replicationFactor,
-                                Map<String, String> topicConfig) throws Exception
-    {
+                                Map<String, String> topicConfig) throws Exception {
         refreshAdmin();
         boolean success = false;
         NewTopic newTopic = new NewTopic(topicName, numPartitions, replicationFactor);
         newTopic.configs(topicConfig);
         CreateTopicsResult createTopicResult = this.adminClient.createTopics(Collections.singleton(newTopic));
 
-        try
-        {
+        try {
             createTopicResult.values().get(topicName).get();
             success = true;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw e;
         }
         return success;
@@ -495,8 +415,7 @@ public class KafkaAdmin implements ApplicationContextAware
     /**
      * 指定ttl partitionNumber 与 副本数
      */
-    public boolean createTopic(String topicName, int numPartitions, short replicationFactor, long ms)
-    {
+    public boolean createTopic(String topicName, int numPartitions, short replicationFactor, long ms) {
         refreshAdmin();
         boolean success = false;
         NewTopic newTopic = new NewTopic(topicName, numPartitions, replicationFactor);
@@ -505,12 +424,10 @@ public class KafkaAdmin implements ApplicationContextAware
         configs.put(TopicConfig.DELETE_RETENTION_MS_CONFIG, ms + "");
         newTopic.configs(configs);
         CreateTopicsResult createTopicResult = this.adminClient.createTopics(Collections.singleton(newTopic));
-        try
-        {
+        try {
             createTopicResult.values().get(topicName).isCompletedExceptionally();
             success = true;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error("", e);
         }
         return success;
@@ -519,8 +436,7 @@ public class KafkaAdmin implements ApplicationContextAware
     /**
      * 删除topic
      */
-    public boolean delete(String topic)
-    {
+    public boolean delete(String topic) {
         refreshAdmin();
         Map<String, Boolean> resultMap = this.delete(Collections.singleton(topic));
         return resultMap.get(topic);
@@ -529,22 +445,18 @@ public class KafkaAdmin implements ApplicationContextAware
     /**
      * 删除topics
      */
-    public Map<String, Boolean> delete(Collection<String> topics)
-    {
+    public Map<String, Boolean> delete(Collection<String> topics) {
         refreshAdmin();
         Map<String, Boolean> result = new HashMap<String, Boolean>(1 << 4);
         DeleteTopicsResult delRes = this.adminClient.deleteTopics(topics);
         Map<String, KafkaFuture<Void>> deleteFutures = delRes.values();
-        for (String topicName : topics)
-        {
+        for (String topicName : topics) {
             boolean flag = false;
-            try
-            {
+            try {
                 KafkaFuture<Void> kafkaFutrue = deleteFutures.get(topicName);
                 kafkaFutrue.get();
                 flag = true;
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("", e);
             }
             result.put(topicName, flag);

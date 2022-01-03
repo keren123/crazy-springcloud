@@ -23,22 +23,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 })
 @EnableSwagger2
 @EnableFeignClients()
-@EnableJpaRepositories(basePackages = { "com.crazymaker.springcloud" })
+@EnableJpaRepositories(basePackages = {"com.crazymaker.springcloud"})
 @EntityScan({"com.crazymaker.springcloud.kafka.entity"})
-public class UnusedApplication   extends SpringBootServletInitializer
-{
+public class KafkaDemoApplication extends SpringBootServletInitializer {
 
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application)
-    {
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         setRegisterErrorPageFilter(false);
-        return application.sources(UnusedApplication.class);
+        return application.sources(KafkaDemoApplication.class);
     }
 
-    public static void main(String[] args)
-    {
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(UnusedApplication.class, args);
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(KafkaDemoApplication.class, args);
         Environment env = applicationContext.getEnvironment();
         String port = env.getProperty("server.port");
         String path = env.getProperty("server.servlet.context-path");

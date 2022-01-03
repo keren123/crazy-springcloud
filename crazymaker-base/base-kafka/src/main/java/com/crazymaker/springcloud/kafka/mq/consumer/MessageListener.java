@@ -2,9 +2,6 @@ package com.crazymaker.springcloud.kafka.mq.consumer;
 
 /**
  * 描述: 对应用户配置的消息监听
- *
- * @author wangpengpeng
- * @date 2020-07-01 11:49
  */
 public interface MessageListener {
     /**
@@ -19,6 +16,6 @@ public interface MessageListener {
      *
      * @param message 收到的消息
      */
-    void process(ConsumeMessage message);
+    void consume(ConsumeMessage message);
 
 }

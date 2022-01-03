@@ -5,13 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * 描述: 对应用户application.yaml中配置的属性
- *
- * @author wangpengpeng
- * @date 2020-07-01 11:49
  */
 @Data
 @ConfigurationProperties(prefix = "mq.kafka")
-public class KafkaProperties {
+public class KafkaConfig {
 
     /**
      * kafka的后台服务访问地址.
@@ -63,5 +60,11 @@ public class KafkaProperties {
      * 重试次数
      */
     private Integer retryCount;
+
+    /**
+     * 订阅的主题和处理器
+     */
+    private String subscribed;
+
 
 }

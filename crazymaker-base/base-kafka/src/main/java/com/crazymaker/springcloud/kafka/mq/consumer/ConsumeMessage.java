@@ -11,9 +11,6 @@ import java.util.Properties;
 
 /**
  * 描述: 接收消息的上层统一数据结构.
- *
- * @author wangpengpeng
- * @date 2020-07-02 12:49
  */
 public class ConsumeMessage implements Serializable {
     /**
