@@ -1,12 +1,10 @@
-package com.crazymaker.kafka.demo;
+package com.crazymaker.mq.demo;
 
-import com.crazymaker.springcloud.common.util.ThreadUtil;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -15,7 +13,6 @@ import org.junit.Test;
 
 import java.util.Collections;
 import java.util.Properties;
-import java.util.Random;
 
 public class KafkaTester {
 

@@ -27,7 +27,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class RockmqHaConsumerController implements ApplicationContextAware {
     public static final String TOPIC_SECKILL = "seckill-topic-ha";
     DefaultMQProducer producer = new DefaultMQProducer("seckill_ha_producerGroup");
 
-    @Value("${rocketmq.address}")
+    @Value("${rocketmq.name-server}")
     private String rocketmqAddress;
 
 
