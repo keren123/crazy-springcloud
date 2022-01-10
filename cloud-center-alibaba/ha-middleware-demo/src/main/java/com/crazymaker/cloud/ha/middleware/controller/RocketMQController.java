@@ -3,15 +3,18 @@ package com.crazymaker.cloud.ha.middleware.controller;
 import com.crazymaker.cloud.ha.middleware.service.impl.MQProducerServiceImpl;
 import com.crazymaker.springcloud.common.dto.UserDTO;
 import com.crazymaker.springcloud.common.result.RestOut;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rocketmq")
+@Api(tags = "rocketmq-spring-boot-starter Demo")
+@Slf4j
+@RequestMapping("/api/rocketmq")
 public class RocketMQController {
 
     @Autowired

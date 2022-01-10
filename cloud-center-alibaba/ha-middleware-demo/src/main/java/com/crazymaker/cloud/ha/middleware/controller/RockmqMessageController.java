@@ -27,10 +27,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-//@RestController
+@RestController
 @RequestMapping("/api/seckill/rockmq/")
 @Api(tags = "Rockmq消息Demo")
 @Slf4j

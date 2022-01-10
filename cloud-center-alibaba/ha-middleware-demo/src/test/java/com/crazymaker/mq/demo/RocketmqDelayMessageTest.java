@@ -42,7 +42,7 @@ public class RocketmqDelayMessageTest {
                 Message message = new Message(TOPIC_TEST, ("Java高并发 卷王 " + i).getBytes());
                 // 设置延时等级3,这个消息将在10s之后发送(现在只支持固定的几个时间,详看delayTimeLevel)
                 message.setDelayTimeLevel(3);
-                // 发送消息
+                 // 发送消息
                 producer.send(message);
             }
             // 关闭生产者

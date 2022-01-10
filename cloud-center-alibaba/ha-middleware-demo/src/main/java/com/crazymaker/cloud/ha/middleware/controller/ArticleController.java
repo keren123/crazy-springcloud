@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@RestController
+//@RestController
 @RequestMapping("/api/articleController/")
 @Api(tags = "搜索的demo")
 @Slf4j

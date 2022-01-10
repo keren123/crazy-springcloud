@@ -22,7 +22,7 @@ import static com.crazymaker.cloud.ha.middleware.config.HAConstant.MQ_TOPIC;
 public class MQConsumerServiceImpl {
 
     // topic需要和生产者的topic一致，consumerGroup属性是必须指定的，内容可以随意
-    // selectorExpression的意思指的就是tag，默认为“*”，不设置的话会监听所有消息
+    // selectorExpression 指的就是tag，默认为“*”，不设置的话会监听所有消息
     @Service
     @RocketMQMessageListener(topic = MQ_TOPIC, selectorExpression = "tag1", consumerGroup = "Con_Group_One")
     public class ConsumerSend implements RocketMQListener<UserDTO> {
@@ -44,7 +44,9 @@ public class MQConsumerServiceImpl {
         }
     }
 
-	// MessageExt：是一个消息接收通配符，不管发送的是String还是对象，都可接收，当然也可以像上面明确指定类型（我建议还是指定类型较方便）
+	// MessageExt：扩展消息类型，
+    // 不管发送的是String还是对象，都可接收，当然也可以像上面明确指定类型，
+    // 当然，指定类型较方便，制定类型，控制比较细粒度
     @Service
     @RocketMQMessageListener(topic = MQ_TOPIC, selectorExpression = "tag2", consumerGroup = "Con_Group_Three")
     public class Consumer implements RocketMQListener<MessageExt> {

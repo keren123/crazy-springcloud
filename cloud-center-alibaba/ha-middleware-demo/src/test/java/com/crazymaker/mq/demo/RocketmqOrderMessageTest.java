@@ -1,21 +1,16 @@
 package com.crazymaker.mq.demo;
 
-import com.crazymaker.springcloud.common.util.JsonUtil;
 import com.crazymaker.springcloud.common.util.ThreadUtil;
-import com.crazymaker.springcloud.seckill.api.dto.SeckillDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.*;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.MessageQueueSelector;
-import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.message.MessageQueue;
-import org.apache.rocketmq.remoting.common.RemotingHelper;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -23,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -45,13 +39,14 @@ public class RocketmqOrderMessageTest {
 
         String[] tags = new String[]{"TagA", "TagC", "TagD"};
 
-        // 订单列表
-        List<OrderStep> orderList = buildOrders();
+        // 订单消息列表
+        List<OrderMsg> orderList = buildOrders();
 
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = sdf.format(date);
-        for (int i = 0; i < 9; i++) {
+
+        for (int i = 0; i < orderList.size(); i++) {
             // 加个时间前缀
             String body = dateStr + "Java高并发 卷王" + orderList.get(i);
             Message msg = new Message(TOPIC_TEST, tags[i % tags.length], "KEY" + i, body.getBytes());
@@ -63,7 +58,7 @@ public class RocketmqOrderMessageTest {
                     long index = id % mqs.size();
                     return mqs.get((int) index);
                 }
-            }, orderList.get(i).getOrderId());//订单id
+            }, orderList.get(i).getOrderId());//订单id  第三个参数，分区的key
 
             System.out.println(String.format("SendResult status:%s, queueId:%d, body:%s",
                     sendResult.getSendStatus(),
@@ -129,7 +124,7 @@ public class RocketmqOrderMessageTest {
     /**
      * 订单的步骤
      */
-    private static class OrderStep {
+    private static class OrderMsg {
         private long orderId;
         private String desc;
 
@@ -161,47 +156,47 @@ public class RocketmqOrderMessageTest {
     /**
      * 生成模拟订单数据
      */
-    private List<OrderStep> buildOrders() {
-        List<OrderStep> orderList = new ArrayList<OrderStep>();
+    private List<OrderMsg> buildOrders() {
+        List<OrderMsg> orderList = new ArrayList<OrderMsg>();
 
-        OrderStep orderDemo = new OrderStep();
+        OrderMsg orderDemo = new OrderMsg();
         orderDemo.setOrderId(1L);
         orderDemo.setDesc("创建");
         orderList.add(orderDemo);
 
 
-        orderDemo = new OrderStep();
+        orderDemo = new OrderMsg();
         orderDemo.setOrderId(1L);
         orderDemo.setDesc("付款");
         orderList.add(orderDemo);
 
-        orderDemo = new OrderStep();
+        orderDemo = new OrderMsg();
         orderDemo.setOrderId(1L);
         orderDemo.setDesc("推送");
         orderList.add(orderDemo);
 
 
-        orderDemo = new OrderStep();
+        orderDemo = new OrderMsg();
         orderDemo.setOrderId(2L);
         orderDemo.setDesc("创建");
         orderList.add(orderDemo);
 
-        orderDemo = new OrderStep();
+        orderDemo = new OrderMsg();
         orderDemo.setOrderId(2L);
         orderDemo.setDesc("付款");
         orderList.add(orderDemo);
 
-        orderDemo = new OrderStep();
+        orderDemo = new OrderMsg();
         orderDemo.setOrderId(2L);
         orderDemo.setDesc("推送");
         orderList.add(orderDemo);
 
-        orderDemo = new OrderStep();
+        orderDemo = new OrderMsg();
         orderDemo.setOrderId(3L);
         orderDemo.setDesc("创建");
         orderList.add(orderDemo);
 
-        orderDemo = new OrderStep();
+        orderDemo = new OrderMsg();
         orderDemo.setOrderId(3L);
         orderDemo.setDesc("付款");
         orderList.add(orderDemo);

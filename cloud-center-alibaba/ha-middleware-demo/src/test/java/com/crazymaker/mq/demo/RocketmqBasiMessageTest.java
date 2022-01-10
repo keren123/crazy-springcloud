@@ -17,7 +17,9 @@ import org.apache.rocketmq.remoting.common.RemotingHelper;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -70,12 +72,13 @@ public class RocketmqBasiMessageTest {
             Message msg = new Message("TopicTest",
                     "TagA",
                     "OrderID188",
-                    ("Java高并发 卷王"+index).getBytes(RemotingHelper.DEFAULT_CHARSET));
+                    ("Java高并发 卷王" + index).getBytes(RemotingHelper.DEFAULT_CHARSET));
             // SendCallback接收异步返回结果的回调
             producer.send(msg, new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
                     System.out.printf("%-10d OK %s %n", index, sendResult.getMsgId());
+                    countDownLatch.countDown();
                 }
 
                 @Override
@@ -137,6 +140,96 @@ public class RocketmqBasiMessageTest {
         // 如果不再发送消息，关闭Producer实例。
         producer.shutdown();
     }
+    @Test
+    public void batchProducerWithListSplitter() throws Exception {
+        // 实例化消息生产者Producer
+        DefaultMQProducer producer = new DefaultMQProducer("please_rename_unique_group_name");
+        // 设置NameServer的地址
+        producer.setNamesrvAddr(ROCKETMQ_SERVER);
+        // 启动Producer实例
+        producer.start();
+
+        List<Message> messages = new ArrayList<>();
+        messages.add(new Message("TopicTest", "TagA", "OrderID001", "Java高并发 卷王 0".getBytes()));
+        messages.add(new Message("TopicTest", "TagA", "OrderID002", "Java高并发 卷王 1".getBytes()));
+        messages.add(new Message("TopicTest", "TagA", "OrderID003", "Java高并发 卷王 2".getBytes()));
+
+        //把大的消息分裂成若干个小的消息
+        ListSplitter splitter = new ListSplitter(messages);
+        while(splitter.hasNext())
+        {
+            try {
+                List<Message> sublist = splitter.next();
+                producer.send(sublist);
+            } catch (Exception e) {
+                e.printStackTrace();
+                //处理error
+            }
+        }
+
+
+        // 如果不再发送消息，关闭Producer实例。
+        producer.shutdown();
+    }
+
+
+    public class ListSplitter implements Iterator<List<Message>> {
+        private final int SIZE_LIMIT = 1024 * 1024 * 4;
+        private final List<Message> messages;
+        private int currIndex;
+
+        public ListSplitter(List<Message> messages) {
+            this.messages = messages;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return currIndex < messages.size();
+        }
+
+        @Override
+        public List<Message> next() {
+            int nextIndex = currIndex;
+            int totalSize = 0;
+            for (; nextIndex < messages.size(); nextIndex++) {
+                Message message = messages.get(nextIndex);
+
+                //topic +body
+
+                int tmpSize = message.getTopic().length() + message.getBody().length;
+
+                // peperties
+
+                Map<String, String> properties = message.getProperties();
+                for (Map.Entry<String, String> entry : properties.entrySet()) {
+                    tmpSize += entry.getKey().length() + entry.getValue().length();
+                }
+
+                // 增加日志的开销20字节
+                tmpSize = tmpSize + 20;
+                if (tmpSize > SIZE_LIMIT) {
+                    //单个消息超过了最大的限制
+                    //忽略,否则会阻塞分裂的进程
+                    if (nextIndex - currIndex == 0) {
+                        //假如下一个子列表没有元素,则添加这个子列表然后退出循环,否则只是退出循环
+                        nextIndex++;
+                    }
+                    break;
+                }
+                if (tmpSize + totalSize > SIZE_LIMIT) {
+                    break;
+                } else {
+                    totalSize += tmpSize;
+                }
+
+            }
+            List<Message> subList = messages.subList(currIndex, nextIndex);
+            currIndex = nextIndex;
+            return subList;
+        }
+    }
+
+
 
     @Test
     public void consumerTest() throws Exception {
@@ -159,7 +252,7 @@ public class RocketmqBasiMessageTest {
                 for (int i = 0; i < msgs.size(); i++) {
                     MessageExt msg = msgs.get(i);
                     String content = new String(msg.getBody());
-                    log.info("收到消息：{}, {}",i, msg.getMsgId() + " " + msg.getTopic() + " " + msg.getTags() + " " + content);
+                    log.info("收到消息：{}, {}", i, msg.getMsgId() + " " + msg.getTopic() + " " + msg.getTags() + " " + content);
                     try {
                         //消费者的业务代码
 //                        redisSeckillServiceImpl.executeSeckill(dto);

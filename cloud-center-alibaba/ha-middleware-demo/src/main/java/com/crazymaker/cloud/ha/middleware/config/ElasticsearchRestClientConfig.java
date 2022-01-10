@@ -11,7 +11,6 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
@@ -30,7 +29,7 @@ import java.util.Arrays;
  * Create By @author zing  @date 2018/7/18 17:20
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class ElasticsearchRestClientConfig {
     private static final int ADDRESS_LENGTH = 2;
     private static final String HTTP_SCHEME = "http";
