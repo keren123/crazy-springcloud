@@ -25,7 +25,7 @@ public class MQConsumerServiceImpl {
     // selectorExpression 指的就是tag，默认为“*”，不设置的话会监听所有消息
     @Service
     @RocketMQMessageListener(topic = MQ_TOPIC, selectorExpression = "tag1", consumerGroup = "Con_Group_One")
-    public class ConsumerSend implements RocketMQListener<UserDTO> {
+    public class Consumer1 implements RocketMQListener<UserDTO> {
         // 监听到消息就会执行此方法
         @Override
         public void onMessage(UserDTO user) {

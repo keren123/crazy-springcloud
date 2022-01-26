@@ -70,13 +70,13 @@ public class RockmqMessageController implements ApplicationContextAware {
      * 执行同步发送
      * <p>
      * <p>
-     * {
-     * "exposedKey": "4b70903f6e1aa87788d3ea962f8b2f0e",
-     * "newStockNum": 10000,
-     * "seckillSkuId": 1157197244718385152,
-     * "seckillToken": "0f8459cbae1748c7b14e4cea3d991000",
-     * "userId": 37
-     * }
+     {
+     "exposedKey": "4b70903f6e1aa87788d3ea962f8b2f0e",
+     "newStockNum": 10000,
+     "seckillSkuId": 1157197244718385152,
+     "seckillToken": "0f8459cbae1748c7b14e4cea3d991000",
+     "userId": 37
+     }
      *
      * @return
      */
@@ -109,14 +109,13 @@ public class RockmqMessageController implements ApplicationContextAware {
      * 执行延迟发送
      * <p>
      * <p>
-     * {
-     * "exposedKey": "4b70903f6e1aa87788d3ea962f8b2f0e",
-     * "newStockNum": 10000,
-     * "seckillSkuId": 1157197244718385152,
-     * "seckillToken": "0f8459cbae1748c7b14e4cea3d991000",
-     * "userId": 37
-     * }
-     *
+     {
+     "exposedKey": "4b70903f6e1aa87788d3ea962f8b2f0e",
+     "newStockNum": 10000,
+     "seckillSkuId": 1157197244718385152,
+     "seckillToken": "0f8459cbae1748c7b14e4cea3d991000",
+     "userId": 37
+     }
      * @return
      */
     @ApiOperation(value = "延迟发送")
@@ -150,13 +149,13 @@ public class RockmqMessageController implements ApplicationContextAware {
      * 执行异步发送
      * <p>
      * <p>
-     * {
-     * "exposedKey": "4b70903f6e1aa87788d3ea962f8b2f0e",
-     * "newStockNum": 10000,
-     * "seckillSkuId": 1157197244718385152,
-     * "seckillToken": "0f8459cbae1748c7b14e4cea3d991000",
-     * "userId": 37
-     * }
+     {
+     "exposedKey": "4b70903f6e1aa87788d3ea962f8b2f0e",
+     "newStockNum": 10000,
+     "seckillSkuId": 1157197244718385152,
+     "seckillToken": "0f8459cbae1748c7b14e4cea3d991000",
+     "userId": 37
+     }
      *
      * @return
      */
@@ -190,13 +189,15 @@ public class RockmqMessageController implements ApplicationContextAware {
      * Send Messages in One-way Mode
      * <p>
      * <p>
-     * {
-     * "exposedKey": "4b70903f6e1aa87788d3ea962f8b2f0e",
-     * "newStockNum": 10000,
-     * "seckillSkuId": 1157197244718385152,
-     * "seckillToken": "0f8459cbae1748c7b14e4cea3d991000",
-     * "userId": 37
-     * }
+
+      {
+      "exposedKey": "4b70903f6e1aa87788d3ea962f8b2f0e",
+      "newStockNum": 10000,
+      "seckillSkuId": 1157197244718385152,
+      "seckillToken": "0f8459cbae1748c7b14e4cea3d991000",
+      "userId": 37
+      }
+
      *
      * @return
      */
@@ -255,6 +256,7 @@ public class RockmqMessageController implements ApplicationContextAware {
         consumer.setNamesrvAddr(rocketmqAddress); //修改为自己的
 //        consumer.setNamesrvAddr("192.168.116.115:9876;192.168.116.116:9876"); //修改为自己的
 
+//        consumer.setMessageModel( MessageModel.BROADCASTING);
 
 /**
  * 设置Consumer第一次启动是从队列头部开始消费还是队列尾部开始消费

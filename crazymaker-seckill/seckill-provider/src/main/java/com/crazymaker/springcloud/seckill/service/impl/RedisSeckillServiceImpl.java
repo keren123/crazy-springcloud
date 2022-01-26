@@ -127,43 +127,7 @@ public class RedisSeckillServiceImpl {
         }
 
 
-        /**
-         * 创建订单对象
-         */
-        SeckillOrderPO order =
-                SeckillOrderPO.builder()
-                        .skuId(skuId).userId(userId).build();
-
-
-        Date nowTime = new Date();
-        order.setCreateTime(nowTime);
-        order.setStatus(SeckillConstants.ORDER_VALID);
-
-
         SeckillOrderDTO dto = null;
-
-        /**
-         * 创建重复性检查的订单对象
-         */
-        SeckillOrderPO checkOrder =
-                SeckillOrderPO.builder().skuId(
-                        order.getSkuId()).userId(order.getUserId()).build();
-
-        //记录秒杀订单信息
-        long insertCount = seckillOrderDao.count(Example.of(checkOrder));
-
-        //唯一性判断：skuId,id 保证一个用户只能秒杀一件商品
-        if (insertCount >= 1) {
-            //重复秒杀
-            log.error("重复秒杀");
-            throw BusinessException.builder().errMsg("重复秒杀").build();
-        }
-        int stockLeft = seckillSegmentStockDao.sumStockCountById(skuId);
-        if (stockLeft <= 0) {
-            //库存不够
-            log.error("库存不够");
-            throw BusinessException.builder().errMsg("库存不够").build();
-        }
 
         /**
          * 获取分布式锁
@@ -186,6 +150,45 @@ public class RedisSeckillServiceImpl {
         }
         if (locked) {
             try {
+
+
+                /**
+                 * 创建订单对象
+                 */
+                SeckillOrderPO order =
+                        SeckillOrderPO.builder()
+                                .skuId(skuId).userId(userId).build();
+
+
+                Date nowTime = new Date();
+                order.setCreateTime(nowTime);
+                order.setStatus(SeckillConstants.ORDER_VALID);
+
+                /**
+                 * 创建重复性检查的订单对象
+                 */
+                SeckillOrderPO checkOrder =
+                        SeckillOrderPO.builder()
+                                .skuId(order.getSkuId())
+                                .userId(order.getUserId()).build();
+
+                //记录秒杀订单信息
+                long insertCount = seckillOrderDao.count(Example.of(checkOrder));
+
+                //唯一性判断：skuId,id 保证一个用户只能秒杀一件商品
+                if (insertCount >= 1) {
+                    //重复秒杀
+                    log.error("重复秒杀");
+                    throw BusinessException.builder().errMsg("重复秒杀").build();
+                }
+                int stockLeft = seckillSegmentStockDao.sumStockCountById(skuId);
+                if (stockLeft <= 0) {
+                    //库存不够
+                    log.error("库存不够");
+                    throw BusinessException.builder().errMsg("库存不够").build();
+                }
+
+
 //                Optional<SeckillSkuPO> optional = seckillSkuDao.findById(order.getSkuId());
 //                if (!optional.isPresent()) {
 //                    //秒杀不存在

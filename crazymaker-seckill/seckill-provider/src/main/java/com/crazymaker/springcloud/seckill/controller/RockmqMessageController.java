@@ -98,7 +98,7 @@ public class RockmqMessageController implements ApplicationContextAware {
                     "TagA" /* Tag */,
                     (content).getBytes(RemotingHelper.DEFAULT_CHARSET)
             );
-
+//            msg.setKeys(dto.);
             //异步发送消息
             producer.send(msg, sendCallback);
 
