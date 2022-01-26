@@ -4,6 +4,8 @@ import com.crazymaker.springcloud.common.util.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.*;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.MessageQueueSelector;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -11,6 +13,7 @@ import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.message.MessageQueue;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -30,12 +33,16 @@ public class RocketmqOrderMessageTest {
     //Producer端发送同步消息
    
     @Test
-    public void producerOrdered() throws Exception {
+    public void producerOrdered() {
         DefaultMQProducer producer = new DefaultMQProducer("please_rename_unique_group_name");
 
         producer.setNamesrvAddr(ROCKETMQ_SERVER);
 
-        producer.start();
+        try {
+            producer.start();
+        } catch (MQClientException e) {
+            e.printStackTrace();
+        }
 
         String[] tags = new String[]{"TagA", "TagC", "TagD"};
 
@@ -51,14 +58,30 @@ public class RocketmqOrderMessageTest {
             String body = dateStr + "Java高并发 卷王" + orderList.get(i);
             Message msg = new Message(TOPIC_TEST, tags[i % tags.length], "KEY" + i, body.getBytes());
 
-            SendResult sendResult = producer.send(msg, new MessageQueueSelector() {
-                @Override
-                public MessageQueue select(List<MessageQueue> mqs, Message msg, Object arg) {
-                    Long id = (Long) arg;  //根据订单id选择发送queue
-                    long index = id % mqs.size();
-                    return mqs.get((int) index);
-                }
-            }, orderList.get(i).getOrderId());//订单id  第三个参数，分区的key
+
+            // 循环n次
+            // 规避掉异常broker
+            SendResult sendResult = null;//订单id  第三个参数，分区的key
+            try {
+                sendResult = producer.send(msg, new MessageQueueSelector() {
+                    @Override
+                    public MessageQueue select(List<MessageQueue> mqs, Message msg, Object arg) {
+                        Long id = (Long) arg;  //根据订单id选择发送queue
+                        long index = id % mqs.size();
+                        return mqs.get((int) index);
+                    }
+                }, orderList.get(i).getOrderId());
+
+
+            } catch (MQClientException e) {
+                e.printStackTrace();
+            } catch (RemotingException e) {
+                e.printStackTrace();
+            } catch (MQBrokerException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             System.out.println(String.format("SendResult status:%s, queueId:%d, body:%s",
                     sendResult.getSendStatus(),
