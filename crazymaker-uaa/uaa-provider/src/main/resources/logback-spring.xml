@@ -3,7 +3,7 @@
     <property name="APP_Name" value="uaa-provider" />
     <contextName>${APP_Name}</contextName>
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径，请根据需求配置路径-->
-    <property name="LOG_HOME" value="${log_uaa_provider_path:-E:/logs/uaa-provider/logs}" />
+    <property name="LOG_HOME" value="${log_uaa_provider_path:-C:/logs/uaa-provider/logs}" />
 
     <!-- 彩色日志依赖的渲染类 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />

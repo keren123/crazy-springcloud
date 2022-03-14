@@ -38,7 +38,7 @@ public class SessionController
     {
 
         LoginOutDTO dto = userService.login(loginInfoDTO);
-        response.setHeader("Content-Type", "text/html;charset=utf-8" );
+        response.setHeader("Content-Type", "application/json;charset=utf-8" );
         response.setHeader(SessionConstants.AUTHORIZATION_HEAD, dto.getToken());
         return RestOut.success(dto);
     }
