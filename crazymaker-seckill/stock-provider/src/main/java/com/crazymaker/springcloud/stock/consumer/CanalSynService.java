@@ -7,8 +7,6 @@ import java.util.Collection;
 /**
  * Canal同步服务
  *
- * @author Yu
- * @date 2019/09/08 00:00
  **/
 
 public interface CanalSynService<T> {

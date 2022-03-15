@@ -1,5 +1,3 @@
-
-
 package com.crazymaker.springcloud.sharding.jdbc.demo.dao.impl;
 
 import com.crazymaker.springcloud.sharding.jdbc.demo.dao.OrderRepository;
@@ -14,40 +12,34 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class JpaOrderRepositoryImpl implements OrderRepository
-{
+public class JpaOrderRepositoryImpl implements OrderRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public void createTableIfNotExists()
-    {
+    public void createTableIfNotExists() {
         throw new UnsupportedOperationException("createTableIfNotExists for JPA");
     }
 
     @Override
-    public void truncateTable()
-    {
+    public void truncateTable() {
         throw new UnsupportedOperationException("truncateTable for JPA");
     }
 
     @Override
-    public void dropTable()
-    {
+    public void dropTable() {
         throw new UnsupportedOperationException("dropTable for JPA");
     }
 
     @Override
-    public Long insert(final Order order)
-    {
+    public Long insert(final Order order) {
         entityManager.persist(order);
         return order.getOrderId();
     }
 
     @Override
-    public void delete(final Long orderId)
-    {
+    public void delete(final Long orderId) {
         Query query = entityManager.createQuery("DELETE FROM OrderEntity o WHERE o.orderId = ?1");
         query.setParameter(1, orderId);
         query.executeUpdate();
@@ -55,8 +47,7 @@ public class JpaOrderRepositoryImpl implements OrderRepository
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Order> selectAll()
-    {
+    public List<Order> selectAll() {
         return (List<Order>) entityManager.createQuery("SELECT o FROM OrderEntity o").getResultList();
     }
 }

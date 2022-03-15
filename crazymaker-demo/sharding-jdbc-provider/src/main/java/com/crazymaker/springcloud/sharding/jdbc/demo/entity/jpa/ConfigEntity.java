@@ -17,26 +17,20 @@
 
 package com.crazymaker.springcloud.sharding.jdbc.demo.entity.jpa;
 
-import com.crazymaker.springcloud.sharding.jdbc.demo.entity.Order;
+import com.crazymaker.springcloud.sharding.jdbc.demo.entity.ConfigBean;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "t_order")
-public final class OrderEntity extends Order {
+@Table(name = "t_config")
+public final class ConfigEntity extends ConfigBean {
 
     @Id
-    @Column(name = "order_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Override
-    public long getOrderId() {
-        return super.getOrderId();
-    }
-
-    @Column(name = "user_id")
-    @Override
-    public long getUserId() {
-        return super.getUserId();
+    public long getId() {
+        return super.getId();
     }
 
     @Column(name = "status")

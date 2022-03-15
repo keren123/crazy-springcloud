@@ -6,16 +6,14 @@ import com.crazymaker.springcloud.common.distribute.idGenerator.IdGenerator;
 /**
  * create by 尼恩 @ 疯狂创客圈
  **/
-public class SnowflakeIdGenerator implements IdGenerator
-{
+public class SnowflakeIdGenerator implements IdGenerator {
 
     private SnowflakeIdWorker worker;
     private String type = "undefined";
     private boolean inited;
 
 
-    public SnowflakeIdGenerator(String type)
-    {
+    public SnowflakeIdGenerator(String type) {
         this.type = type;
         worker = new SnowflakeIdWorker(type);
 
@@ -34,19 +32,16 @@ public class SnowflakeIdGenerator implements IdGenerator
      *
      * @return the 单例
      */
-    private synchronized void init()
-    {
+    private synchronized void init() {
         workerId = worker.getId();
-        if (workerId > MAX_WORKER_ID)
-        {
+        if (workerId > MAX_WORKER_ID) {
             // zk分配的workerId过大
             throw new IllegalArgumentException("woker Id wrong: " + workerId);
         }
-        inited=true;
+        inited = true;
     }
 
-    private SnowflakeIdGenerator()
-    {
+    private SnowflakeIdGenerator() {
 
     }
 
@@ -104,10 +99,8 @@ public class SnowflakeIdGenerator implements IdGenerator
      *
      * @return the nextId
      */
-    public Long nextId()
-    {
-        if(!inited)
-        {
+    public Long nextId() {
+        if (!inited) {
             init();
         }
         return generateId();
@@ -116,28 +109,23 @@ public class SnowflakeIdGenerator implements IdGenerator
     /**
      * 生成唯一id的具体实现
      */
-    private synchronized long generateId()
-    {
+    private synchronized long generateId() {
         long current = System.currentTimeMillis();
 
-        if (current < lastTimestamp)
-        {
+        if (current < lastTimestamp) {
             // 如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过，出现问题返回-1
             return -1;
         }
 
-        if (current == lastTimestamp)
-        {
+        if (current == lastTimestamp) {
             // 如果当前生成id的时间还是上次的时间，那么对sequence序列号进行+1
             sequence = (sequence + 1) & MAX_SEQUENCE;
 
-            if (sequence == MAX_SEQUENCE)
-            {
+            if (sequence == MAX_SEQUENCE) {
                 // 当前毫秒生成的序列数已经大于最大值，那么阻塞到下一个毫秒再获取新的时间戳
                 current = this.nextMs(lastTimestamp);
             }
-        } else
-        {
+        } else {
             // 当前的时间戳已经是下一个毫秒
             sequence = 0L;
         }
@@ -159,11 +147,9 @@ public class SnowflakeIdGenerator implements IdGenerator
     /**
      * 阻塞到下一个毫秒
      */
-    private long nextMs(long timeStamp)
-    {
+    private long nextMs(long timeStamp) {
         long current = System.currentTimeMillis();
-        while (current <= timeStamp)
-        {
+        while (current <= timeStamp) {
             current = System.currentTimeMillis();
         }
         return current;
@@ -172,6 +158,19 @@ public class SnowflakeIdGenerator implements IdGenerator
 
     public static void main(String[] args) {
         System.out.println("MAX_WORKER_ID = " + MAX_WORKER_ID);
-        System.out.println("MAX_SEQUENCE = " + MAX_SEQUENCE);}
+        System.out.println("MAX_SEQUENCE = " + MAX_SEQUENCE);
+
+        int SEQUENCE_BITS = 56;
+        long MAX_SEQUENCE = ~(-1L << SEQUENCE_BITS);
+        System.out.println("MAX_SEQUENCE = " + MAX_SEQUENCE);
+        int WORKER_ID_BITS = 8;
+        long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
+        System.out.println("MAX_WORKER_ID = " + MAX_WORKER_ID);
+
+        Long workerIdPart=10L<< SEQUENCE_BITS ;
+        Long   workerId =workerIdPart |  1L;
+        System.out.println("workerId = " + workerId);
+
+    }
 
 }

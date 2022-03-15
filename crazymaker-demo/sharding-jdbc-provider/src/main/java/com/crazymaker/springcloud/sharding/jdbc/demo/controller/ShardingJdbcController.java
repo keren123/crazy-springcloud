@@ -18,8 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/sharding/")
 @Api(tags = "sharding jdbc 演示")
-public class ShardingJdbcController
-{
+public class ShardingJdbcController {
 
     @Resource
     JpaEntityService jpaEntityService;
@@ -27,8 +26,7 @@ public class ShardingJdbcController
 
     @PostMapping("/order/add/v1")
     @ApiOperation(value = "插入订单")
-    public RestOut<Order> orderAdd(@RequestBody Order dto)
-    {
+    public RestOut<Order> orderAdd(@RequestBody Order dto) {
         jpaEntityService.addOrder(dto);
 
         return RestOut.success(dto);
@@ -37,8 +35,7 @@ public class ShardingJdbcController
 
     @PostMapping("/order/list/v1")
     @ApiOperation(value = "查询订单")
-    public RestOut<List<Order>> listAll()
-    {
+    public RestOut<List<Order>> listAll() {
         List<Order> list = jpaEntityService.selectAllOrder();
 
         return RestOut.success(list);
@@ -47,8 +44,7 @@ public class ShardingJdbcController
 
     @PostMapping("/user/add/v1")
     @ApiOperation(value = "插入用户")
-    public RestOut<User> userAdd(@RequestBody User dto)
-    {
+    public RestOut<User> userAdd(@RequestBody User dto) {
         jpaEntityService.addUser(dto);
 
         return RestOut.success(dto);
@@ -57,8 +53,7 @@ public class ShardingJdbcController
 
     @PostMapping("/user/list/v1")
     @ApiOperation(value = "查询用户")
-    public RestOut<List<User>> listAllUser()
-    {
+    public RestOut<List<User>> listAllUser() {
         List<User> list = jpaEntityService.selectAllUser();
 
         return RestOut.success(list);

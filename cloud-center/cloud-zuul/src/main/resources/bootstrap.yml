@@ -84,6 +84,9 @@ zuul:
           url: https://www.cnblogs.com
           sensitiveHeaders: Cookie,Set-Cookie,token,backend,Authorization
 
+#  demo 1:  http://127.0.0.1:8888/blog/crazymakercircle/p/9904544.html
+#   demo 2:   http://127.0.0.1:8888/blog/vivotech/p/16007922.htm
+
 ribbon:
   eager-load:
     enabled: true

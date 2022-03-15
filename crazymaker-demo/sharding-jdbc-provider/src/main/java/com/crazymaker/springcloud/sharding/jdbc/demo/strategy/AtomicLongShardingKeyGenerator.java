@@ -8,8 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 // 单机版 AtomicLong 类型的ID生成器
 @Data
-public class AtomicLongShardingKeyGenerator implements ShardingKeyGenerator
-{
+public class AtomicLongShardingKeyGenerator implements ShardingKeyGenerator {
 
     private AtomicLong atomicLong = new AtomicLong(0);
     private Properties properties = new Properties();
@@ -22,7 +21,7 @@ public class AtomicLongShardingKeyGenerator implements ShardingKeyGenerator
     @Override
     public String getType() {
 
-    	//声明类型
+        //声明类型
         return "AtomicLong";
     }
 }

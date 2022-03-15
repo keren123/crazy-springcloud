@@ -9,12 +9,10 @@ import java.util.HashMap;
 
 
 @Configuration
-public class HelpConfig
-{
+public class HelpConfig {
     //屏蔽默认的 RedisSessionRepository
     @Bean
-    SessionRepository sessionRepository()
-    {
-      return new MapSessionRepository(new HashMap<>());
+    SessionRepository sessionRepository() {
+        return new MapSessionRepository(new HashMap<>());
     }
 }

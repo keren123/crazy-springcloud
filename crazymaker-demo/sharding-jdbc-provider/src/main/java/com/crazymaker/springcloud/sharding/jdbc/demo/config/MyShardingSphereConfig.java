@@ -45,15 +45,17 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
- * 自定义shardingsphere配置，实际拷贝自原配置文件，只做少量改动
+ * 自定义shardingsphere配置，
+ * 实际拷贝自原配置文件，
+ * 只做少量改动
  **/
 @Configuration
 @ComponentScan({"org.apache.shardingsphere.spring.boot.converter"})
 @EnableConfigurationProperties({SpringBootShardingRuleConfigurationProperties.class, SpringBootMasterSlaveRuleConfigurationProperties.class, SpringBootEncryptRuleConfigurationProperties.class, SpringBootPropertiesConfigurationProperties.class, SpringBootShadowRuleConfigurationProperties.class})
 @AutoConfigureBefore({DruidDataSourceAutoConfigure.class, DataSourceAutoConfiguration.class})
-public class MyShardingsphereConfig implements EnvironmentAware
-{
+public class MyShardingSphereConfig implements EnvironmentAware {
     private final SpringBootShardingRuleConfigurationProperties shardingRule;
     private final SpringBootMasterSlaveRuleConfigurationProperties masterSlaveRule;
     private final SpringBootEncryptRuleConfigurationProperties encryptRule;
@@ -66,93 +68,74 @@ public class MyShardingsphereConfig implements EnvironmentAware
 
     @Bean
     @Conditional({ShardingRuleCondition.class})
-    public DataSource shardingDataSource() throws SQLException
-    {
+    public DataSource shardingDataSource() throws SQLException {
         return ShardingDataSourceFactory.createDataSource(dataSourceMap, (new ShardingRuleConfigurationYamlSwapper()).swap(shardingRule), props.getProps());
     }
 
     @Bean
     @Conditional({MasterSlaveRuleCondition.class})
-    public DataSource masterSlaveDataSource() throws SQLException
-    {
+    public DataSource masterSlaveDataSource() throws SQLException {
         return MasterSlaveDataSourceFactory.createDataSource(dataSourceMap, (new MasterSlaveRuleConfigurationYamlSwapper()).swap(masterSlaveRule), props.getProps());
     }
 
     @Bean
     @Conditional({EncryptRuleCondition.class})
-    public DataSource encryptDataSource() throws SQLException
-    {
+    public DataSource encryptDataSource() throws SQLException {
         return EncryptDataSourceFactory.createDataSource((DataSource) dataSourceMap.values().iterator().next(), (new EncryptRuleConfigurationYamlSwapper()).swap(encryptRule), props.getProps());
     }
 
     @Bean
     @Conditional({ShadowRuleCondition.class})
-    public DataSource shadowDataSource() throws SQLException
-    {
+    public DataSource shadowDataSource() throws SQLException {
         return ShadowDataSourceFactory.createDataSource(dataSourceMap, (new ShadowRuleConfigurationYamlSwapper()).swap(shadowRule), props.getProps());
     }
 
     @Bean
-    public ShardingTransactionTypeScanner shardingTransactionTypeScanner()
-    {
+    public ShardingTransactionTypeScanner shardingTransactionTypeScanner() {
         return new ShardingTransactionTypeScanner();
     }
 
     @Override
-    public final void setEnvironment(Environment environment)
-    {
+    public final void setEnvironment(Environment environment) {
         String prefix = "spring.shardingsphere.datasource.";
 
-        for (String dsName : getDataSourceNames(environment, prefix))
-        {
-            try
-            {
+        for (String dsName : getDataSourceNames(environment, prefix)) {
+            try {
                 dataSourceMap.put(dsName, getDataSource(environment, prefix, dsName));
-            } catch (ReflectiveOperationException reflectiveOperationException)
-            {
+            } catch (ReflectiveOperationException reflectiveOperationException) {
                 throw new ShardingSphereException("Can't find datasource type!", reflectiveOperationException);
-            } catch (NamingException namingException)
-            {
+            } catch (NamingException namingException) {
                 throw new ShardingSphereException("Can't find JNDI datasource!", namingException);
-            } catch (SQLException sqlException)
-            {
+            } catch (SQLException sqlException) {
                 throw new ShardingSphereException("set druidDatasource filters failed!", sqlException);
             }
         }
 
     }
 
-    private List<String> getDataSourceNames(Environment environment, String prefix)
-    {
+    private List<String> getDataSourceNames(Environment environment, String prefix) {
         StandardEnvironment standardEnv = (StandardEnvironment) environment;
         standardEnv.setIgnoreUnresolvableNestedPlaceholders(true);
         List<String> result;
-        if (null == standardEnv.getProperty(prefix + "name"))
-        {
+        if (null == standardEnv.getProperty(prefix + "name")) {
             result = (new InlineExpressionParser(standardEnv.getProperty(prefix + "names"))).splitAndEvaluate();
-        } else
-        {
+        } else {
             result = Collections.singletonList(standardEnv.getProperty(prefix + "name"));
         }
         return result;
     }
 
-    private DataSource getDataSource(Environment environment, String prefix, String dataSourceName) throws ReflectiveOperationException, NamingException, SQLException
-    {
+    private DataSource getDataSource(Environment environment, String prefix, String dataSourceName) throws ReflectiveOperationException, NamingException, SQLException {
         Map<String, Object> dataSourceProps = (Map) PropertyUtil.handle(environment, prefix + dataSourceName.trim(), Map.class);
         Preconditions.checkState(!dataSourceProps.isEmpty(), "Wrong datasource properties!");
-        if (dataSourceProps.containsKey(JNDI_NAME))
-        {
+        if (dataSourceProps.containsKey(JNDI_NAME)) {
             return getJndiDataSource(dataSourceProps.get(JNDI_NAME).toString());
-        } else
-        {
+        } else {
             DataSource result = DataSourceUtil.getDataSource(dataSourceProps.get("type").toString(), dataSourceProps);
 
             //*******适配druidDataSource，添加filter,否则不能实现sql,防火墙等监控功能！！！**************
-            if (result instanceof DruidDataSource)
-            {
-                if (dataSourceProps.get(DRUID_FILTER_PREFIX) != null)
-                {
+            if (result instanceof DruidDataSource) {
+                if (dataSourceProps.get(DRUID_FILTER_PREFIX) != null) {
                     ((DruidDataSource) result).setFilters(dataSourceProps.get(DRUID_FILTER_PREFIX).toString());
                 }
             }
@@ -164,8 +147,7 @@ public class MyShardingsphereConfig implements EnvironmentAware
         }
     }
 
-    private DataSource getJndiDataSource(String jndiName) throws NamingException
-    {
+    private DataSource getJndiDataSource(String jndiName) throws NamingException {
         JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
         bean.setResourceRef(true);
         bean.setJndiName(jndiName);
@@ -174,8 +156,7 @@ public class MyShardingsphereConfig implements EnvironmentAware
         return (DataSource) bean.getObject();
     }
 
-    public MyShardingsphereConfig(SpringBootShardingRuleConfigurationProperties shardingRule, SpringBootMasterSlaveRuleConfigurationProperties masterSlaveRule, SpringBootEncryptRuleConfigurationProperties encryptRule, SpringBootShadowRuleConfigurationProperties shadowRule, SpringBootPropertiesConfigurationProperties props)
-    {
+    public MyShardingSphereConfig(SpringBootShardingRuleConfigurationProperties shardingRule, SpringBootMasterSlaveRuleConfigurationProperties masterSlaveRule, SpringBootEncryptRuleConfigurationProperties encryptRule, SpringBootShadowRuleConfigurationProperties shadowRule, SpringBootPropertiesConfigurationProperties props) {
         this.shardingRule = shardingRule;
         this.masterSlaveRule = masterSlaveRule;
         this.encryptRule = encryptRule;

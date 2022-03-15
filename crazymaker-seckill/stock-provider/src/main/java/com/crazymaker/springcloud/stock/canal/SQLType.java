@@ -1,4 +1,4 @@
-package com.crazymaker.springcloud.stock.consumer;
+package com.crazymaker.springcloud.stock.canal;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 /**
  * Canal监听SQL类型
  *
- * @author Yu
- * @date 2019/09/08 00:18
  **/
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SQLType {

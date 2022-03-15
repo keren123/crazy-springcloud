@@ -56,7 +56,7 @@ public class UpdateRedisSkuConsumer extends AbstractCanalMQ2RedisService<Seckill
      * @param flatMessage Canal发送MQ信息
      * @return 泛型对象集合
      */
-    protected Set<SeckillSkuPO> getData(FlatMessage flatMessage) {
+    protected Set<SeckillSkuPO> getCanalData(FlatMessage flatMessage) {
         List<Map<String, String>> sourceData = flatMessage.getData();
         Set<SeckillSkuPO> targetData = Sets.newHashSetWithExpectedSize(sourceData.size());
         for (Map<String, String> map : sourceData) {

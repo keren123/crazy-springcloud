@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by 尼恩 on 2019/7/18.
  */
-@Repository
 public interface MqMessageDao extends JpaRepository<MqMessagePO, String>, JpaSpecificationExecutor<MqMessagePO>
 {
 

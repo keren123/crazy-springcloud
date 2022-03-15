@@ -23,9 +23,9 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class RocketmqBasiMessageTest {
-    public static final String ROCKETMQ_SERVER = "cdh2:9876;cdh2:9877";
+//    public static final String ROCKETMQ_SERVER = "cdh2:9876;cdh2:9877";
 
-    //    public static final String ROCKETMQ_SERVER = "cdh2:9876";
+        public static final String ROCKETMQ_SERVER = "cdh2:9876";
 //    public static final String ROCKETMQ_SERVER = "192.168.56.122:9876";
     //Producer端发送同步消息
     @Test

@@ -29,6 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableJpaRepositories(basePackages = {
         "com.crazymaker.springcloud.sharding.jdbc.demo.dao.impl",
+        "com.crazymaker.springcloud.sharding.jdbc.demo.dao",
 //        "com.crazymaker.springcloud.base.dao"
 })
 @EnableTransactionManagement(proxyTargetClass = true)
@@ -47,10 +48,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //        defaultConfiguration = FeignConfiguration.class)
 //@Slf4j
 //@EnableEurekaClient
-public class ShardingJdbcDemoCloudApplication
-{
-    public static void main(String[] args)
-    {
+public class ShardingJdbcDemoCloudApplication {
+    public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(ShardingJdbcDemoCloudApplication.class, args);
 
 
@@ -59,7 +58,6 @@ public class ShardingJdbcDemoCloudApplication
         String path = env.getProperty("server.servlet.context-path");
         System.out.println("\n----------------------------------------------------------\n\t" +
                 "Application is running! Access URLs:\n\t" +
-                "Local: \t\thttp://localhost:" + port + path + "/index.html\n\t" +
                 "swagger-ui: \thttp://localhost:" + port + path + "/swagger-ui.html\n\t" +
                 "----------------------------------------------------------");
 
