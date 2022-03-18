@@ -9,7 +9,7 @@ management:
     logfile:
       # spring boot admin  client不配置日志文件路径（同时配置logback-spring.xml对应的日志输出配置，否则无法输出日志），
       # 控制台上的Logging模块下的Logfile会报错：Fetching logfile failed.Request failed with status code 404
-      external-file: E:/logs/seata-stock-demo/logs/output.log
+      external-file: C:/logs/seata-stock-demo/logs/output.log
       enabled: true
     health:
       show-details: always

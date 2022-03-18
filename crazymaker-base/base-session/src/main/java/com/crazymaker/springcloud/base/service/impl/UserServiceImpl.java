@@ -113,7 +113,7 @@ public class UserServiceImpl
         }
         UserPO userPO = list.get(0);
 
-        //进行密码的验证
+        //进行密码的验证  test/123456
         //String encode = passwordEncoder.encode(dto.getPassword());
         String encoded = userPO.getPassword();
         String raw = dto.getPassword();
