@@ -32,4 +32,4 @@ spring:
 #    root: ${LOG_LEVEL:INFO}
 #    com.test.demo: info
 #  #  方便Spring Boot Admin页面上实时查看日志
-#  file: E:/logs/provider-monitor/logs/output.log
+#  file: C:/logs/provider-monitor/logs/output.log

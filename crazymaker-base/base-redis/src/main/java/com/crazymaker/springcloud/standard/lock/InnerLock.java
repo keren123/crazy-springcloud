@@ -96,7 +96,7 @@ public class InnerLock {
             redisKeys.add(key);
             redisKeys.add(requestId);
             Long res = (Long) getRedisTemplate().execute(unLockScript, redisKeys);
-
+//            log.info("unlock");
 //            boolean unlocked = res != null && res.equals(UNLOCKED);
 
 

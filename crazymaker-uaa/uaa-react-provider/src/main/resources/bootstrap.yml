@@ -22,7 +22,7 @@ management:
     logfile:
       # spring boot admin  client不配置日志文件路径（同时配置logback-spring.xml对应的日志输出配置，否则无法输出日志），
       # 控制台上的Logging模块下的Logfile会报错：Fetching logfile failed.Request failed with status code 404
-      external-file: ${log_uaa_provider_path:E:/logs/uaa-provider/logs}/output.log
+      external-file: ${log_uaa_provider_path:C:/logs/uaa-provider/logs}/output.log
       enabled: true
     health:
       show-details: always
@@ -148,7 +148,7 @@ hystrix:
 #    root: ${LOG_LEVEL:INFO}
 #    com.test.demo: info
 #  #  方便Spring Boot Admin页面上实时查看日志
-#  file: ${log_uaa_provider_path:E:/logs/uaa-provider/logs}/output.log
+#  file: ${log_uaa_provider_path:C:/logs/uaa-provider/logs}/output.log
 
 
 devtools:

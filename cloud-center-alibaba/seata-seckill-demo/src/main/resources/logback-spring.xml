@@ -3,7 +3,7 @@
     <property name="APP_Name" value="seata-stock-demo"/>
     <contextName>${APP_Name}</contextName>
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径，请根据需求配置路径-->
-    <property name="LOG_HOME" value="E:/logs/seata-stock-demo/logs"/>
+    <property name="LOG_HOME" value="C:/logs/seata-stock-demo/logs"/>
 
     <!-- 彩色日志依赖的渲染类 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>

@@ -98,7 +98,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
             {
                 JwtAuthenticationToken authToken = new JwtAuthenticationToken(JWT.decode(token));
                 passedToken = this.getAuthenticationManager().authenticate(authToken);
-                UserDetails details = (UserDetails) passedToken.getDetails();
+                UserDetails details = (UserDetails) passedToken.getCredentials();
                 request.setAttribute(SessionConstants.USER_IDENTIFIER, details.getUsername());
             } else
             {
