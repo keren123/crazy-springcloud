@@ -1,9 +1,8 @@
 package com.crazymaker.cloud.ha.middleware.config;
 
 
-import com.alibaba.nacos.common.utils.Objects;
-import com.alibaba.nacos.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * this file to you under the Apache License,
